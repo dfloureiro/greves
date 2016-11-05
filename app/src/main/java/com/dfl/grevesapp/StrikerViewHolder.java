@@ -18,6 +18,11 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
     @Getter @Setter private TextView companyName;
     @Getter @Setter private TextView description;
     @Getter @Setter private ImageView imageView;
+    @Getter @Setter private TextView endDate;
+    @Getter @Setter private TextView weekday;
+    @Getter @Setter private TextView day;
+    @Getter @Setter private TextView month;
+    @Getter @Setter private TextView year;
 
     StrikerViewHolder(View itemView) {
         super(itemView);
@@ -25,5 +30,10 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
         companyName = (TextView)itemView.findViewById(R.id.companyName);
         description = (TextView)itemView.findViewById(R.id.description);
         imageView = (ImageView)itemView.findViewById(R.id.cardImage);
+        endDate = (TextView)itemView.findViewById(R.id.endDate);
+        weekday = (TextView)itemView.findViewById(R.id.weekday);
+        day = (TextView)itemView.findViewById(R.id.day);
+        month = (TextView)itemView.findViewById(R.id.month);
+        year = (TextView)itemView.findViewById(R.id.year);
     }
 }

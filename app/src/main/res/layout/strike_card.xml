@@ -17,35 +17,96 @@
             android:padding="16dp"
             >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cardImage"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="small image" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/companyName"
-                android:layout_toRightOf="@+id/cardImage"
-                android:layout_toEndOf="@+id/cardImage"
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toEndOf="@+id/leftLayout"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
+                android:text="Company"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endDate"
+                android:layout_below="@+id/companyName"
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toEndOf="@+id/leftLayout"
+                android:textSize="20sp"
+                android:text="Final do dia"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/description"
-                android:layout_toRightOf="@+id/cardImage"
-                android:layout_toEndOf="@+id/cardImage"
-                android:layout_below="@+id/companyName"
+                android:layout_below="@+id/endDate"
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toEndOf="@+id/leftLayout"
+                android:text="description"
                 />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cardImage"
+                android:src="@drawable/ic_megaphone"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/leftLayout"
+                android:padding="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weekday"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="10sp"
+                    android:text="Monday"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/day"
+                    android:textSize="30sp"
+                    android:text="26"
+                    android:layout_below="@+id/weekday"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/month"
+                    android:layout_below="@+id/day"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="10sp"
+                    android:text="September"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/year"
+                    android:layout_below="@+id/month"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="10sp"
+                    android:text="2016"
+                    />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

@@ -21,6 +21,9 @@ import com.dfl.grevesapp.webservice.HaGrevesServices;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
+        getStrikes();
         getAllStrikes();
     }
 
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
+                sortStrikes(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes);
                 recyclerView.setAdapter(adapter);
             }
@@ -141,5 +146,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.e("greves", t.toString());
             }
         });
+    }
+
+    private void getStrikes() {
+        HaGrevesServices apiService = ApiClient.getClient().create(HaGrevesServices.class);
+        Call<Strike[]> call = apiService.getStrikes();
+        call.enqueue(new Callback<Strike[]>() {
+            @Override
+            public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
+                ArrayList<Strike> strikes = new ArrayList<>();
+                Collections.addAll(strikes, response.body());
+                sortStrikes(strikes);
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<Strike[]> call, Throwable t) {
+                Log.e("greves", t.toString());
+            }
+        });
+    }
+
+    private void sortStrikes(ArrayList<Strike> strikes){
+        Comparator<Strike> comparator = new Comparator<Strike>() {
+            @Override
+            public int compare(Strike c1, Strike c2) {
+                return c2.getId() - c1.getId();
+            }
+        };
+        Collections.sort(strikes, comparator);
     }
 }
