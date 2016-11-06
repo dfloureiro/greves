@@ -30,6 +30,10 @@
                 android:id="@+id/nav_sendFeedback"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Enviar opinião" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_share"
+                android:title="Acerca de" />
         </menu>
     </item>
 
