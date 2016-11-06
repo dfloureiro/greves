@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showAllStrikes = true;
             refreshRecycleView();
         } else if (id == R.id.nav_settings) {
-
+            // TODO: 06/11/2016 settings tab and notifications
         } else if (id == R.id.nav_reportStrike) {
             sendReportStrikeEmail();
         } else if (id == R.id.nav_share) {
