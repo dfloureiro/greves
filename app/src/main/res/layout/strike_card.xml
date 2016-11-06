@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
@@ -23,7 +24,7 @@
                 android:id="@+id/companyName"
                 android:layout_alignParentTop="true"
                 android:textSize="22sp"
-                android:text="Company"
+                android:text="@string/company"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_toLeftOf="@+id/cardImage"
@@ -37,9 +38,10 @@
                 android:id="@+id/endDate"
                 android:layout_below="@+id/companyName"
                 android:textSize="15sp"
-                android:text="Final do dia"
+                android:text="@string/end_of_day"
                 android:paddingTop="7dp"
                 android:layout_toLeftOf="@+id/cardImage"
+                android:layout_toStartOf="@+id/cardImage"
                 android:layout_toRightOf="@+id/leftLayout"
                 android:layout_toEndOf="@+id/leftLayout" />
 
@@ -51,13 +53,13 @@
                 android:layout_toRightOf="@+id/leftLayout"
                 android:layout_toEndOf="@+id/leftLayout"
                 android:paddingTop="10dp"
-                android:text="description"
+                android:text="@string/description"
                 android:textSize="12sp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
             <RelativeLayout
-                android:layout_width="76dp"
+                android:layout_width="78dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/leftLayout"
                 android:paddingTop="7dp"
@@ -70,8 +72,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/weekday"
                     android:layout_centerHorizontal="true"
-                    android:textSize="10sp"
-                    android:text="segunda-feira"
+                    android:textSize="12sp"
+                    android:text="@string/weekday"
                     />
 
                 <TextView
@@ -79,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/day"
                     android:textSize="30sp"
-                    android:text="26"
+                    android:text="@string/day"
                     android:layout_below="@+id/weekday"
                     android:layout_centerHorizontal="true" />
 
@@ -89,8 +91,8 @@
                     android:id="@+id/month"
                     android:layout_below="@+id/day"
                     android:layout_centerHorizontal="true"
-                    android:textSize="10sp"
-                    android:text="September"
+                    android:textSize="12sp"
+                    android:text="@string/month"
                     />
 
                 <TextView
@@ -99,8 +101,8 @@
                     android:id="@+id/year"
                     android:layout_below="@+id/month"
                     android:layout_centerHorizontal="true"
-                    android:textSize="10sp"
-                    android:text="2016"
+                    android:textSize="12sp"
+                    android:text="@string/year"
                     />
 
             </RelativeLayout>
@@ -110,26 +112,28 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description"
                 android:paddingTop="7dp"
-                android:layout_toRightOf="@+id/leftLayout">
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toEndOf="@+id/leftLayout">
 
                 <Button
                     android:layout_width="70dp"
                     android:layout_height="20dp"
-                    android:text="Ver Fonte"
-                    android:textSize="10dp"
+                    android:text="@string/see_source"
+                    android:textSize="10sp"
                     android:background="@drawable/round_rectangle_source"
                     android:textColor="#ffffff"
                     android:id="@+id/source"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    tools:ignore="SmallSp" />
 
                 <Button
                     android:layout_width="90dp"
                     android:layout_height="20dp"
                     android:id="@+id/canceled"
-                    android:text="Desconvocada"
-                    android:textSize="10dp"
+                    android:text="@string/cancelled"
+                    android:textSize="10sp"
                     android:background="@drawable/round_rectangle_canceled"
                     android:textColor="#ffffff"
                     android:clickable="false"
@@ -137,7 +141,8 @@
                     android:layout_toEndOf="@+id/source"
                     android:layout_marginLeft="12dp"
                     android:layout_marginStart="12dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    tools:ignore="SmallSp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -146,7 +151,8 @@
                     android:src="@drawable/ic_menu_share"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:clickable="true" />
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name" />
 
             </RelativeLayout>
 
@@ -156,7 +162,8 @@
                 android:id="@+id/cardImage"
                 android:src="@drawable/ic_megaphone"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/app_name" />
 
         </RelativeLayout>
 

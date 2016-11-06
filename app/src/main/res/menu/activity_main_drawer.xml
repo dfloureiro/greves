@@ -5,35 +5,35 @@
         <item
             android:id="@+id/nav_strikes"
             android:icon="@drawable/ic_megaphone"
-            android:title="Últimas greves" />
+            android:title="@string/last_strikes" />
         <item
             android:id="@+id/nav_allStrikes"
             android:icon="@drawable/ic_megaphone"
-            android:title="Histórico de greves" />
+            android:title="@string/history_strikes" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Definições" />
+            android:title="@string/action_settings" />
         <item
             android:id="@+id/nav_reportStrike"
             android:icon="@drawable/ic_menu_send"
-            android:title="Submeter greve" />
+            android:title="@string/submit_new_strike" />
     </group>
 
-    <item android:title="Partilhar">
+    <item android:title="@string/share">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Partilhar aplicação" />
+                android:title="@string/share_app" />
             <item
                 android:id="@+id/nav_sendFeedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Enviar opinião" />
+                android:title="@string/send_feedback" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_share"
-                android:title="Acerca de" />
+                android:title="@string/about" />
         </menu>
     </item>
 

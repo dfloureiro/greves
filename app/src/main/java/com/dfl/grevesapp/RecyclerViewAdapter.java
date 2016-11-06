@@ -16,12 +16,13 @@ import java.util.List;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
+ *
  */
 
 /**
  * recycler view adapter
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
+class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
 
     private List<Strike> strikes;
     private Context context;
@@ -50,11 +51,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>
         GregorianCalendar endDay = parseDate(strikes.get(i).getEnd_date());
 
         //set text/image values to the card
-        strikerViewHolder.getEndDate().setText("Acaba a "+endDay.get(GregorianCalendar.DAY_OF_MONTH)+" "+getMonthForInt(beginDay.get(GregorianCalendar.MONTH))+" "+endDay.get(GregorianCalendar.YEAR));
-        strikerViewHolder.getWeekday().setText(getWeekdayForInt(beginDay.get(GregorianCalendar.DAY_OF_WEEK))+"");
-        strikerViewHolder.getDay().setText(beginDay.get(GregorianCalendar.DAY_OF_MONTH)+"");
-        strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH))+"");
-        strikerViewHolder.getYear().setText(beginDay.get(GregorianCalendar.YEAR)+"");
+        strikerViewHolder.getEndDate().setText(context.getResources().getString(R.string.ends_at)
+                +endDay.get(GregorianCalendar.DAY_OF_MONTH)+" "
+                +getMonthForInt(beginDay.get(GregorianCalendar.MONTH))+" "
+                +endDay.get(GregorianCalendar.YEAR));
+        strikerViewHolder.getWeekday().setText(getWeekdayForInt(beginDay.get(GregorianCalendar.DAY_OF_WEEK)));
+        strikerViewHolder.getDay().setText(String.valueOf(beginDay.get(GregorianCalendar.DAY_OF_MONTH)));
+        strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH)));
+        strikerViewHolder.getYear().setText(String.valueOf(beginDay.get(GregorianCalendar.YEAR)));
         strikerViewHolder.getCompanyName().setText(strikes.get(i).getCompany().getName());
         strikerViewHolder.getDescription().setText(strikes.get(i).getDescription());
         strikerViewHolder.getImageView().setImageResource(getIconType(strikes.get(i).getCompany().getName()));
@@ -81,7 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, sourceLink);
-                Intent shareChoose = Intent.createChooser(share, "Partilhar via");
+                Intent shareChoose = Intent.createChooser(share, context.getResources().getString(R.string.share_via));
                 shareChoose.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(shareChoose);
             }

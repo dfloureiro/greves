@@ -3,6 +3,31 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Definições</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="hagreve_email">submeter@hagreve.com</string>
+
+    <string name="send_strike_via">Enviar nova greve através de…</string>
+    <string name="no_email_client_installed">Não tem um cliente de email instalado.</string>
+    <string name="submit_new_strike">Submeter nova greve</string>
+    <string name="share_via">Partilhar via</string>
+    <string name="ends_at">"Acaba a "</string>
+    <string name="no_strikes_message">Não há greves, tenha um bom dia!</string>
+
+    <string name="company">Empresa</string>
+    <string name="end_of_day">Final do dia</string>
+    <string name="description">descrição</string>
+    <string name="weekday">dia-semana</string>
+    <string name="day">dia</string>
+    <string name="month">mês</string>
+    <string name="year">ano</string>
+    <string name="see_source">Ver Fonte</string>
+    <string name="cancelled">Desconvocada</string>
+
+    <string name="last_strikes">Últimas greves</string>
+    <string name="history_strikes">Histórico de greves</string>
+    <string name="share">Partilhar</string>
+    <string name="share_app">Partilhar aplicação</string>
+    <string name="send_feedback">Enviar opinião</string>
+    <string name="about">Acerca de</string>
 </resources>

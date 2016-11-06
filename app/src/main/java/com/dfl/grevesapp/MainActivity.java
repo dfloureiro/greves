@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         //navigation view
@@ -189,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void sendReportStrikeEmail(){
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"submeter@hagreve.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Submeter nova greve");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{getResources().getString(R.string.hagreve_email)});
+        i.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.submit_new_strike));
         try {
-            startActivity(Intent.createChooser(i, "Enviar nova greve através de..."));
+            startActivity(Intent.createChooser(i, getResources().getString(R.string.send_strike_via)));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "Não tem um cliente de email instalado.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_email_client_installed, Toast.LENGTH_SHORT).show();
         }
     }
 

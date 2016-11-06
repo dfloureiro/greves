@@ -31,7 +31,8 @@
             android:id="@+id/noStrikesIcon"
             android:src="@mipmap/ic_no_strike"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/noStrikesText"
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_below="@+id/noStrikesIcon"
-            android:text="Não há greves, tenha um bom dia!"/>
+            android:text="@string/no_strikes_message"/>
     </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
