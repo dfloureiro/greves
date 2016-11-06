@@ -14,6 +14,9 @@ import lombok.Setter;
  * Created by Diogo Loureiro on 05/11/2016.
  */
 
+/**
+ * all the view resources of a card
+ */
 public class StrikerViewHolder extends RecyclerView.ViewHolder {
     @Getter @Setter private CardView cardView;
     @Getter @Setter private TextView companyName;
@@ -28,6 +31,10 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
     @Getter @Setter private Button cancelled;
     @Getter @Setter private ImageView share;
 
+    /**
+     * contructor
+     * @param itemView view
+     */
     StrikerViewHolder(View itemView) {
         super(itemView);
         cardView = (CardView)itemView.findViewById(R.id.cardView);

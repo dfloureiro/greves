@@ -1,12 +1,9 @@
 package com.dfl.grevesapp;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,15 +27,17 @@ import com.dfl.grevesapp.webservice.HaGrevesServices;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * main activity of the greves app
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //views resources
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private DrawerLayout drawer;
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView noStrikesIcon;
     private TextView noStrikesText;
 
+    //has value of the type of request
     private boolean showAllStrikes = false;
 
     @Override
@@ -61,12 +60,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //navigation view
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //recycler view
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
+        //swype layout
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        //first update
         refreshRecycleView();
     }
 
@@ -90,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         noStrikesText = (TextView) findViewById(R.id.noStrikesText);
     }
 
+    /**
+     * makes new request based on user preference
+     */
     private void refreshRecycleView(){
         noStrikesIcon.setVisibility(View.GONE);
         noStrikesText.setVisibility(View.GONE);
@@ -154,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_share) {
             shareApp();
         } else if (id == R.id.nav_sendFeedback) {
-            sendFeedbackEmail();
+            sendFeedback();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -162,15 +168,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * intent to share the app trough social media
+     */
     private void shareApp(){
         // TODO: 06/11/2016 partilhar o link da app
     }
 
-    private void sendFeedbackEmail(){
+    /**
+     * intent to send feedback. Redirects do store link
+     */
+    private void sendFeedback(){
         // TODO: 06/11/2016 redirecionar para o link da loja
     }
 
 
+    /**
+     * send new email, reporting a new strike
+     */
     private void sendReportStrikeEmail(){
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
@@ -184,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * get all strikes
+     * all strikes request. returns all strikes, including the ones that already finished
      */
     private void getAllStrikes() {
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
@@ -199,20 +214,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 recyclerView.setAdapter(adapter);
                 hideLoading();
                 if(response.body().length == 0){
-                    noStrikesIcon.setVisibility(View.VISIBLE);
-                    noStrikesText.setVisibility(View.VISIBLE);
+                    showNoStrikesScreen();
                 }
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
                 hideLoading();
-                noStrikesIcon.setVisibility(View.VISIBLE);
-                noStrikesText.setVisibility(View.VISIBLE);
+                showNoStrikesScreen();
             }
         });
     }
 
+    /**
+     * strikes request. returns strikes, only the ones that are happening or about to
+     */
     private void getStrikes() {
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getStrikes();
@@ -226,25 +242,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 recyclerView.setAdapter(adapter);
                 hideLoading();
                 if(response.body().length == 0){
-                    noStrikesIcon.setVisibility(View.VISIBLE);
-                    noStrikesText.setVisibility(View.VISIBLE);
+                    showNoStrikesScreen();
                 }
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
                 hideLoading();
-                noStrikesIcon.setVisibility(View.VISIBLE);
-                noStrikesText.setVisibility(View.VISIBLE);
+                showNoStrikesScreen();
             }
         });
     }
 
+    /**
+     * hide loading elements
+     */
     private void hideLoading(){
         mSwipeRefreshLayout.setRefreshing(false);
         progressBar.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * shows the views when no strikes are available to be shown
+     */
+    private void showNoStrikesScreen(){
+        noStrikesIcon.setVisibility(View.VISIBLE);
+        noStrikesText.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * order the strikes list
+     * @param strikes array list of strikes to order
+     */
     private void sortStrikes(ArrayList<Strike> strikes){
         Comparator<Strike> comparator = new Comparator<Strike>() {
             @Override

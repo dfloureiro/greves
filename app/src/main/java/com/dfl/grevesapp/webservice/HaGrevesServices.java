@@ -11,6 +11,9 @@ import retrofit2.http.GET;
  * Created by Diogo Loureiro on 05/11/2016.
  */
 
+/**
+ * hagreves.com api
+ */
 public interface HaGrevesServices {
 
     @GET("v2/allstrikes")

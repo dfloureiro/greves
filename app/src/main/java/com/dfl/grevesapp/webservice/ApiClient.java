@@ -18,12 +18,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Diogo Loureiro on 05/11/2016.
  */
 
+/**
+ * api client setup
+ */
 public class ApiClient {
 
     public static final String BASE_URL = "http://hagreve.com/api/";
     private static Retrofit retrofit = null;
     private static boolean isOnline;
 
+    /**
+     * get client
+     * @param context app context
+     * @return retrofit client
+     */
     public static Retrofit getClient(Context context) {
         isOnline = isNetworkConnected(context);
         if (retrofit == null) {
@@ -36,6 +44,11 @@ public class ApiClient {
         return retrofit;
     }
 
+    /**
+     * setup client to the retrofit
+     * @param context app context
+     * @return client with the cache applied
+     */
     private static OkHttpClient setupClient(Context context) {
         //setup cache
         File httpCacheDirectory = new File(context.getCacheDir(), "responses");
@@ -49,6 +62,9 @@ public class ApiClient {
     }
 
 
+    /**
+     * interceptor with the cache controls
+     */
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -67,6 +83,11 @@ public class ApiClient {
         }
     };
 
+    /**
+     * check if network is connected
+     * @param context app context
+     * @return true if network is connected
+     */
     private static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
