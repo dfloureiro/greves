@@ -1,11 +1,13 @@
 package com.dfl.grevesapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
     private FloatingActionButton sendNewStrike;
     private DrawerLayout drawer;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
-        getStrikes();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllStrikes();
+            }
+        });
+        //getStrikes();
         getAllStrikes();
     }
 
@@ -62,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void bindViews(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         sendNewStrike = (FloatingActionButton) findViewById(R.id.fab);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,27 +139,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * get all strikes
      */
     private void getAllStrikes() {
-        HaGrevesServices apiService = ApiClient.getClient().create(HaGrevesServices.class);
+        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getAllStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
                 sortStrikes(strikes);
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes);
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes,getBaseContext());
                 recyclerView.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 Log.e("greves", t.toString());
             }
         });
     }
 
     private void getStrikes() {
-        HaGrevesServices apiService = ApiClient.getClient().create(HaGrevesServices.class);
+        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
@@ -157,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
                 sortStrikes(strikes);
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes);
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes,getBaseContext());
                 recyclerView.setAdapter(adapter);
             }
 

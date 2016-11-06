@@ -1,6 +1,10 @@
 package com.dfl.grevesapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +24,11 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
 
     private List<Strike> strikes;
-    ImageView imageView;
+    private Context context;
 
-    RecyclerViewAdapter(List<Strike> strikes){
+    RecyclerViewAdapter(List<Strike> strikes, Context context){
         this.strikes = strikes;
+        this.context = context;
     }
 
     @Override
@@ -46,6 +51,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>
         strikerViewHolder.getDay().setText(beginDay.get(GregorianCalendar.DAY_OF_MONTH)+"");
         strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH))+"");
         strikerViewHolder.getYear().setText(beginDay.get(GregorianCalendar.YEAR)+"");
+
+        if(strikes.get(i).isCanceled()){
+            strikerViewHolder.getCancelled().setVisibility(View.VISIBLE);
+        }
+
+        final String sourceLink = strikes.get(i).getSource_link();
+        strikerViewHolder.getSource().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Uri uri = Uri.parse(sourceLink);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+        strikerViewHolder.getShare().setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, sourceLink);
+                Intent shareChoose = Intent.createChooser(share, "Partilhar via");
+                shareChoose.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                context.startActivity(shareChoose);
+            }
+        });
     }
 
     @Override
@@ -56,6 +88,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>
     @Override
     public int getItemCount() {
         return strikes.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     private GregorianCalendar parseDate(String date){

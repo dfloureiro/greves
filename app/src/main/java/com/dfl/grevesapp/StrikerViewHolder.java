@@ -3,6 +3,7 @@ package com.dfl.grevesapp;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,9 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
     @Getter @Setter private TextView day;
     @Getter @Setter private TextView month;
     @Getter @Setter private TextView year;
+    @Getter @Setter private Button source;
+    @Getter @Setter private Button cancelled;
+    @Getter @Setter private ImageView share;
 
     StrikerViewHolder(View itemView) {
         super(itemView);
@@ -35,5 +39,8 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
         day = (TextView)itemView.findViewById(R.id.day);
         month = (TextView)itemView.findViewById(R.id.month);
         year = (TextView)itemView.findViewById(R.id.year);
+        source = (Button)itemView.findViewById(R.id.source);
+        cancelled = (Button)itemView.findViewById(R.id.canceled);
+        share = (ImageView)itemView.findViewById(R.id.share);
     }
 }

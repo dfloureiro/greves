@@ -14,9 +14,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="7dp"
             >
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,20 +56,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cardImage"
-                android:src="@drawable/ic_megaphone"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="76dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/leftLayout"
-                android:padding="7dp"
+                android:paddingTop="7dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
@@ -81,7 +71,7 @@
                     android:id="@+id/weekday"
                     android:layout_centerHorizontal="true"
                     android:textSize="10sp"
-                    android:text="Monday"
+                    android:text="segunda-feira"
                     />
 
                 <TextView
@@ -114,6 +104,59 @@
                     />
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:paddingTop="7dp"
+                android:layout_toRightOf="@+id/leftLayout">
+
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:text="Ver Fonte"
+                    android:textSize="10dp"
+                    android:background="@drawable/round_rectangle_source"
+                    android:textColor="#ffffff"
+                    android:id="@+id/source"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/canceled"
+                    android:text="Cancelada"
+                    android:textSize="10dp"
+                    android:background="@drawable/round_rectangle_canceled"
+                    android:textColor="#ffffff"
+                    android:clickable="false"
+                    android:layout_toRightOf="@+id/source"
+                    android:layout_toEndOf="@+id/source"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/share"
+                    android:src="@drawable/ic_menu_share"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cardImage"
+                android:src="@drawable/ic_megaphone"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 
