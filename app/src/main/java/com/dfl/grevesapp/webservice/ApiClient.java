@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
+ *
  */
 
 /**
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiClient {
 
-    public static final String BASE_URL = "http://hagreve.com/api/";
+    private static final String BASE_URL = "http://hagreve.com/api/";
     private static Retrofit retrofit = null;
     private static boolean isOnline;
 

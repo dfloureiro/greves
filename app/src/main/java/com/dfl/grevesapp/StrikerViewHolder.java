@@ -12,12 +12,13 @@ import lombok.Setter;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
+ *
  */
 
 /**
  * all the view resources of a card
  */
-public class StrikerViewHolder extends RecyclerView.ViewHolder {
+class StrikerViewHolder extends RecyclerView.ViewHolder {
     @Getter @Setter private CardView cardView;
     @Getter @Setter private TextView companyName;
     @Getter @Setter private TextView description;
