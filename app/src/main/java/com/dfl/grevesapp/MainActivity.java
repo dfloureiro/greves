@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBar progressBar;
 
+    private boolean showAllStrikes = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +65,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getAllStrikes();
+                if(showAllStrikes) {
+                    getAllStrikes();
+                }
+                else {
+                    getStrikes();
+                }
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
-        //getStrikes();
-        getAllStrikes();
+
+        getStrikes();
     }
 
     /**
@@ -119,17 +127,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.nav_strikes) {
+            getStrikes();
+            showAllStrikes = false;
+        } else if (id == R.id.nav_allStrikes) {
+            getAllStrikes();
+            showAllStrikes = true;
+        } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_sendFeedback) {
 
         }
 
@@ -143,32 +151,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * get all strikes
      */
     private void getAllStrikes() {
-        progressBar.setVisibility(View.VISIBLE);
         recyclerView.removeAllViews();
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getAllStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                progressBar.setVisibility(View.GONE);
-
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
                 sortStrikes(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes,getBaseContext());
                 recyclerView.setAdapter(adapter);
+
+                hideLoading();
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                progressBar.setVisibility(View.GONE);
+                hideLoading();
             }
         });
     }
 
     private void getStrikes() {
+        recyclerView.removeAllViews();
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getStrikes();
         call.enqueue(new Callback<Strike[]>() {
@@ -179,13 +185,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sortStrikes(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes,getBaseContext());
                 recyclerView.setAdapter(adapter);
+
+                hideLoading();
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
-                Log.e("greves", t.toString());
+                hideLoading();
             }
         });
+    }
+
+    private void hideLoading(){
+        mSwipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void sortStrikes(ArrayList<Strike> strikes){
