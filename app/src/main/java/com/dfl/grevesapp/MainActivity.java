@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.dfl.grevesapp.api.Strike;
 import com.dfl.grevesapp.webservice.ApiClient;
@@ -35,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private FloatingActionButton sendNewStrike;
     private DrawerLayout drawer;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
-        sendNewStrike = (FloatingActionButton) findViewById(R.id.fab);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     @Override
@@ -139,12 +143,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * get all strikes
      */
     private void getAllStrikes() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.removeAllViews();
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getAllStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 mSwipeRefreshLayout.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
                 sortStrikes(strikes);
@@ -155,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.e("greves", t.toString());
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
