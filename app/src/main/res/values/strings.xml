@@ -30,4 +30,8 @@
     <string name="share_app">Partilhar aplicação</string>
     <string name="send_feedback">Enviar opinião</string>
     <string name="about">Acerca de</string>
+    <string name="title_preferences_activity">Definições</string>
+    <string name="allow_notifications">Permitir notificações</string>
+    <string name="allow_notifications_summary">Receba notificações a avisar novas greves</string>
+    <string name="notifications">Notificações</string>
 </resources>

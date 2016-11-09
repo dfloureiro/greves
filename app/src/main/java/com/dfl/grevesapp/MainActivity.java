@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfl.grevesapp.Preferences.PreferencesActivity;
 import com.dfl.grevesapp.api.Strike;
 import com.dfl.grevesapp.webservice.ApiClient;
 import com.dfl.grevesapp.webservice.HaGrevesServices;
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showAllStrikes = true;
             refreshRecycleView();
         } else if (id == R.id.nav_settings) {
-            // TODO: 06/11/2016 settings tab and notifications
+            startActivity(new Intent(getBaseContext(),PreferencesActivity.class));
         } else if (id == R.id.nav_reportStrike) {
             sendReportStrikeEmail();
         } else if (id == R.id.nav_share) {
