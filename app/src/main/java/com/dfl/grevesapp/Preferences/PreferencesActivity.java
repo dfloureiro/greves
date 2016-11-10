@@ -2,10 +2,7 @@ package com.dfl.grevesapp.Preferences;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
-import com.dfl.grevesapp.R;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
