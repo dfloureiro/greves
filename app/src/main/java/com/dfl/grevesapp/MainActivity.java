@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView noStrikesText;
 
     //has value of the type of request
+    // TODO: 09/11/2016 fix on rotation not saving this var
     private boolean showAllStrikes = false;
 
     @Override

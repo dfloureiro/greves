@@ -1,14 +1,14 @@
 package com.dfl.grevesapp.Preferences;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
  *
  */
 
-public class PreferencesActivity extends Activity {
+public class PreferencesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
