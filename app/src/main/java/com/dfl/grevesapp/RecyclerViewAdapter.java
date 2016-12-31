@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dfl.grevesapp.api.Strike;
+import com.dfl.grevesapp.datamodels.Strike;
 
 import java.text.DateFormatSymbols;
 import java.util.GregorianCalendar;

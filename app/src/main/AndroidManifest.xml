@@ -42,7 +42,7 @@
         <service android:name=".services.UpdateService">
         </service>
 
-        <receiver android:name=".broadcastReceiver.UpdateBroadcastReceiver" >
+        <receiver android:name=".receivers.UpdateBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

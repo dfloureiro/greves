@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.webservice;
+package com.dfl.grevesapp.webservices;
 
 
 import android.content.Context;

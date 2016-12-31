@@ -1,8 +1,8 @@
-package com.dfl.grevesapp.webservice;
+package com.dfl.grevesapp.webservices;
 
 
-import com.dfl.grevesapp.api.Company;
-import com.dfl.grevesapp.api.Strike;
+import com.dfl.grevesapp.datamodels.Company;
+import com.dfl.grevesapp.datamodels.Strike;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.broadcastReceiver;
+package com.dfl.grevesapp.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

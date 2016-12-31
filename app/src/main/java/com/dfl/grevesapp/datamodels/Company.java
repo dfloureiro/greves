@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.api;
+package com.dfl.grevesapp.datamodels;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,4 @@
-package com.dfl.grevesapp.api;
-
-import java.util.Date;
-import java.util.GregorianCalendar;
+package com.dfl.grevesapp.datamodels;
 
 import lombok.Getter;
 import lombok.Setter;
