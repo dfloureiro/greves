@@ -34,4 +34,5 @@
     <string name="allow_notifications">Permitir notificações</string>
     <string name="allow_notifications_summary">Receba notificações a avisar novas greves</string>
     <string name="notifications">Notificações</string>
+    <string name="service_name">Últimas Greves</string>
 </resources>

@@ -19,16 +19,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
 import com.dfl.grevesapp.api.Strike;
+import com.dfl.grevesapp.services.UpdateService;
 import com.dfl.grevesapp.webservice.ApiClient;
 import com.dfl.grevesapp.webservice.HaGrevesServices;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //first update
         refreshRecycleView();
+
+        startService(new Intent(this, UpdateService.class));
     }
 
     /**
