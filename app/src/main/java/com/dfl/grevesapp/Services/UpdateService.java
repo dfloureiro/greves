@@ -1,22 +1,34 @@
 package com.dfl.grevesapp.services;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import com.dfl.grevesapp.MainActivity;
+import com.dfl.grevesapp.R;
+import com.dfl.grevesapp.datamodels.Strike;
+import com.dfl.grevesapp.webservices.ApiClient;
+import com.dfl.grevesapp.webservices.HaGrevesServices;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
  *
  */
-public class UpdateService extends Service {
+public class UpdateService extends Service implements Callback<Strike[]> {
 
     private static final String TAG = UpdateService.class.getSimpleName();
     public static final long UPDATES_INTERVAL = AlarmManager.INTERVAL_DAY;
+    private int startId;
 
     /**
      * set alarm up
@@ -26,7 +38,7 @@ public class UpdateService extends Service {
     public static void setAlarm(AlarmManager am, Context context) {
         Intent intent = new Intent(context, UpdateService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, UPDATES_INTERVAL, pendingIntent);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, 5000, pendingIntent);
     }
 
     /**
@@ -54,6 +66,10 @@ public class UpdateService extends Service {
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
         // TODO: 26/12/2016 iniciar o pedido dos updates
         Log.d(TAG,"onStartCommand");
+        this.startId = startId;
+        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
+        Call<Strike[]> call = apiService.getStrikes();
+        call.enqueue(this);
         return START_NOT_STICKY;
     }
 
@@ -61,7 +77,33 @@ public class UpdateService extends Service {
         return null;
     }
 
-    private void setUpdatesNotification() {
-        // TODO: 26/12/2016 mostrar notificação
+    private void createNotification(){
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification =
+                new NotificationCompat.Builder(getBaseContext()).setContentIntent(
+                        resultPendingIntent)
+                        .setOngoing(false)
+                        .setSmallIcon(R.drawable.ic_megaphone)
+                        .setContentTitle("Novas Greves!")
+                        .setContentText("Vejas as novas greves")
+                        .build();
+
+        notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+        final NotificationManager managerNotification = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        managerNotification.notify(12345, notification);
+        //ManagerPreferences.setLastUpdates(numberUpdates);
+        stopSelf(startId);
+    }
+
+    @Override
+    public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
+        createNotification();
+    }
+
+    @Override
+    public void onFailure(Call<Strike[]> call, Throwable t) {
+
     }
 }
