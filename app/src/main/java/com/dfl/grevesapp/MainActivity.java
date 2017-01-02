@@ -34,9 +34,6 @@ import retrofit2.Response;
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  *
- */
-
-/**
  * main activity of the greves app
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

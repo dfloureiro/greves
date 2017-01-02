@@ -17,9 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  *
- */
-
-/**
  * api client setup
  */
 public class ApiClient {

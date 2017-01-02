@@ -6,16 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  *
- */
-
-/**
  * all the view resources of a card
  */
 class StrikerViewHolder extends RecyclerView.ViewHolder {

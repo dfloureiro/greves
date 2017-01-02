@@ -17,7 +17,6 @@ public class UpdateBroadcastReceiver extends BroadcastReceiver {
 
     @Override public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
-            Log.d("lou","UpdateBroadcastReceiver");
             context.startService(new Intent(context, UpdateService.class));
         }
     }

@@ -7,10 +7,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+
+import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.MainActivity;
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.datamodels.Strike;
@@ -23,6 +26,7 @@ import retrofit2.Response;
 /**
  * Created by Diogo Loureiro on 09/11/2016.
  *
+ * Service to check for new updates on strikes
  */
 public class UpdateService extends Service implements Callback<Strike[]> {
 
@@ -38,7 +42,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     public static void setAlarm(AlarmManager am, Context context) {
         Intent intent = new Intent(context, UpdateService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, 5000, pendingIntent);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, UPDATES_INTERVAL, pendingIntent);
     }
 
     /**
@@ -77,7 +81,11 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         return null;
     }
 
-    private void createNotification(){
+    /**
+     * create notification for a strike
+     * @param strike strike for the notification info
+     */
+    private void createNotification(Strike strike){
         Intent resultIntent = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -85,25 +93,28 @@ public class UpdateService extends Service implements Callback<Strike[]> {
                 new NotificationCompat.Builder(getBaseContext()).setContentIntent(
                         resultPendingIntent)
                         .setOngoing(false)
-                        .setSmallIcon(R.drawable.ic_megaphone)
-                        .setContentTitle("Novas Greves!")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), CompaniesUtils.getIconType(strike.getCompany().getName())))
+                        .setContentTitle("Nova Greve da "+strike.getCompany().getName()+"!")
                         .setContentText("Vejas as novas greves")
                         .build();
 
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         final NotificationManager managerNotification = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        managerNotification.notify(12345, notification);
+        managerNotification.notify(strike.getId(), notification);
         //ManagerPreferences.setLastUpdates(numberUpdates);
         stopSelf(startId);
     }
 
     @Override
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
-        createNotification();
+        for(Strike strike :response.body()) {
+            createNotification(strike);
+        }
     }
 
     @Override
     public void onFailure(Call<Strike[]> call, Throwable t) {
-
+        stopSelf(startId);
     }
 }

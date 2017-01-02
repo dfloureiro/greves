@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Strike;
-
 import java.text.DateFormatSymbols;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,9 +17,6 @@ import java.util.List;
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  *
- */
-
-/**
  * recycler view adapter
  */
 class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
@@ -61,7 +58,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
         strikerViewHolder.getYear().setText(String.valueOf(beginDay.get(GregorianCalendar.YEAR)));
         strikerViewHolder.getCompanyName().setText(strikes.get(i).getCompany().getName());
         strikerViewHolder.getDescription().setText(strikes.get(i).getDescription());
-        strikerViewHolder.getImageView().setImageResource(getIconType(strikes.get(i).getCompany().getName()));
+        strikerViewHolder.getImageView().setImageResource(CompaniesUtils.getIconType(strikes.get(i).getCompany().getName()));
 
         //set button visible if the strike is canceled
         if(strikes.get(i).isCanceled()){
@@ -149,43 +146,5 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
             weekday = weekdays[num];
         }
         return weekday;
-    }
-
-    /**
-     * return the icon type of the company
-     * @param company company on strike
-     * @return id of the resource
-     */
-    private int getIconType(String company){
-        switch (company){
-            case "Metro de Lisboa":
-                return R.drawable.ic_subway;
-            case "Metro do Porto":
-                return R.drawable.ic_subway;
-            case "Táxis":
-                return R.drawable.ic_car;
-            case "TAP":
-                return R.drawable.ic_plane;
-            case "Aviação":
-                return R.drawable.ic_plane;
-            case "Soflusa e Transtejo":
-                return R.drawable.ic_boat;
-            case "Soflusa":
-                return R.drawable.ic_boat;
-            case "Transtejo":
-                return R.drawable.ic_boat;
-            case "CP":
-                return R.drawable.ic_train;
-            case "Fertagus":
-                return R.drawable.ic_train;
-            case "Carris":
-                return R.drawable.ic_bus;
-            case "Rodoviária de Lisboa":
-                return R.drawable.ic_bus;
-            case "Barraqueiro Transportes":
-                return R.drawable.ic_bus;
-            default:
-                return R.drawable.ic_megaphone;
-        }
     }
 }
