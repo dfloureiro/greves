@@ -1,6 +1,11 @@
 package com.dfl.grevesapp.Utils;
 
 import com.dfl.grevesapp.R;
+import com.dfl.grevesapp.datamodels.Company;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Diogo Loureiro on 02/01/2017.
@@ -44,5 +49,19 @@ public class CompaniesUtils{
             default:
                 return R.drawable.ic_megaphone;
         }
+    }
+
+    /**
+     * order companies by id
+     * @param companies list of companies
+     */
+    public static void sortCompanies(ArrayList<Company> companies){
+        Comparator<Company> comparator = new Comparator<Company>() {
+            @Override
+            public int compare(Company c1, Company c2) {
+                return c2.getId() - c1.getId();
+            }
+        };
+        Collections.sort(companies, comparator);
     }
 }

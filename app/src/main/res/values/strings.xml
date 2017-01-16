@@ -32,7 +32,10 @@
     <string name="about">Acerca de</string>
     <string name="title_preferences_activity">Definições</string>
     <string name="allow_notifications">Permitir notificações</string>
-    <string name="allow_notifications_summary">Receba notificações a avisar novas greves</string>
+    <string name="allow_notifications_summary">Receba notificações sobre novas greves</string>
     <string name="notifications">Notificações</string>
+    <string name="companies">Empresas</string>
     <string name="service_name">Últimas Greves</string>
+    <string name="companies_summary">Receber notificações das seguintes empresas</string>
+    <string name="error_loading_companies">Erro a carregar as empresas</string>
 </resources>

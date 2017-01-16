@@ -7,8 +7,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -31,7 +33,9 @@ import retrofit2.Response;
 public class UpdateService extends Service implements Callback<Strike[]> {
 
     private static final String TAG = UpdateService.class.getSimpleName();
+    public static final String UPDATE_ACTION = "UPDATE_ACTION";
     public static final long UPDATES_INTERVAL = AlarmManager.INTERVAL_DAY;
+    private static final int ALARM_ID = 9876;
     private int startId;
 
     /**
@@ -41,7 +45,8 @@ public class UpdateService extends Service implements Callback<Strike[]> {
      */
     public static void setAlarm(AlarmManager am, Context context) {
         Intent intent = new Intent(context, UpdateService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.setAction(UPDATE_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, UPDATES_INTERVAL, pendingIntent);
     }
 
@@ -52,7 +57,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
      */
     private boolean isAlarmUp(Context context) {
         Intent intent = new Intent(context, UpdateService.class);
-        return (PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE) != null);
+        return (PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_NO_CREATE) != null);
     }
 
     @Override public void onCreate() {
@@ -68,12 +73,15 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
-        // TODO: 26/12/2016 iniciar o pedido dos updates
-        Log.d(TAG,"onStartCommand");
         this.startId = startId;
-        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
-        Call<Strike[]> call = apiService.getStrikes();
-        call.enqueue(this);
+        if(intent.getAction()!=null && intent.getAction().equals(UPDATE_ACTION)) {
+            HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
+            Call<Strike[]> call = apiService.getAllStrikes();
+            call.enqueue(this);
+        }
+        else{
+            stopSelf(startId);
+        }
         return START_NOT_STICKY;
     }
 
@@ -95,26 +103,38 @@ public class UpdateService extends Service implements Callback<Strike[]> {
                         .setOngoing(false)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), CompaniesUtils.getIconType(strike.getCompany().getName())))
-                        .setContentTitle("Nova Greve da "+strike.getCompany().getName()+"!")
-                        .setContentText("Vejas as novas greves")
+                        .setContentTitle("Nova Greve!")
+                        .setContentText(strike.getCompany().getName()+" marcou nova greve!")
                         .build();
 
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         final NotificationManager managerNotification = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         managerNotification.notify(strike.getId(), notification);
         //ManagerPreferences.setLastUpdates(numberUpdates);
-        stopSelf(startId);
     }
 
     @Override
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
         for(Strike strike :response.body()) {
-            createNotification(strike);
+            if(checkPreference(strike.getCompany().getName())) {
+                createNotification(strike);
+            }
         }
+        stopSelf(startId);
     }
 
     @Override
     public void onFailure(Call<Strike[]> call, Throwable t) {
         stopSelf(startId);
+    }
+
+    /**
+     * check preference value
+     * @param key key to check for
+     * @return true if checked
+     */
+    private boolean checkPreference(String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getBoolean(key, true);
     }
 }

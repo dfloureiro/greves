@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
+import com.dfl.grevesapp.Preferences.PreferencesManager;
+import com.dfl.grevesapp.Utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.services.UpdateService;
 import com.dfl.grevesapp.webservices.ApiClient;
@@ -38,6 +41,9 @@ import retrofit2.Response;
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //
+    private String SHOWALLSTRIKES = "SHOWALLSTRIKES";
+
     //views resources
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -48,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView noStrikesText;
 
     //has value of the type of request
-    // TODO: 09/11/2016 fix on rotation not saving this var
     private boolean showAllStrikes = false;
 
     @Override
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bindViews();
+
+        if(savedInstanceState!=null){
+            showAllStrikes=savedInstanceState.getBoolean(SHOWALLSTRIKES);
+        }
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -202,10 +211,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SHOWALLSTRIKES,showAllStrikes);
+    }
+
     /**
      * all strikes request. returns all strikes, including the ones that already finished
      */
-    private void getAllStrikes() {
+    private void getAllStrikes() { // TODO: 16/01/2017 refactor ws
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getAllStrikes();
         call.enqueue(new Callback<Strike[]>() {
@@ -213,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                sortStrikes(strikes);
+                StrikesUtils.sortStrikes(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
                 recyclerView.setAdapter(adapter);
                 hideLoading();
@@ -233,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * strikes request. returns strikes, only the ones that are happening or about to
      */
-    private void getStrikes() {
+    private void getStrikes() { // TODO: 16/01/2017 refactor ws 
         HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getStrikes();
         call.enqueue(new Callback<Strike[]>() {
@@ -241,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                sortStrikes(strikes);
+                StrikesUtils.sortStrikes(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
                 recyclerView.setAdapter(adapter);
                 hideLoading();
@@ -272,19 +287,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showNoStrikesScreen(){
         noStrikesIcon.setVisibility(View.VISIBLE);
         noStrikesText.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * order the strikes list
-     * @param strikes array list of strikes to order
-     */
-    private void sortStrikes(ArrayList<Strike> strikes){
-        Comparator<Strike> comparator = new Comparator<Strike>() {
-            @Override
-            public int compare(Strike c1, Strike c2) {
-                return c2.getId() - c1.getId();
-            }
-        };
-        Collections.sort(strikes, comparator);
     }
 }
