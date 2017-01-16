@@ -57,6 +57,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
      */
     private boolean isAlarmUp(Context context) {
         Intent intent = new Intent(context, UpdateService.class);
+        intent.setAction(UPDATE_ACTION);
         return (PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_NO_CREATE) != null);
     }
 
