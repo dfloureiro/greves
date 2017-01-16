@@ -47,7 +47,10 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         Intent intent = new Intent(context, UpdateService.class);
         intent.setAction(UPDATE_ACTION);
         PendingIntent pendingIntent = PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, UPDATES_INTERVAL, pendingIntent);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), UPDATES_INTERVAL, pendingIntent);
     }
 
     /**
