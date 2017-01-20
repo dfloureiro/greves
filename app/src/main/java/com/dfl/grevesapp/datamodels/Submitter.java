@@ -1,5 +1,6 @@
 package com.dfl.grevesapp.datamodels;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import lombok.Setter;
  *
  * class submiter
  */
-class Submitter {
-    @Getter @Setter private String first_name;
-    @Getter @Setter private String last_name;
+@Data class Submitter {
+    private String first_name;
+    private String last_name;
 }

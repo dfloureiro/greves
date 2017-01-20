@@ -21,6 +21,9 @@ import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.webservices.ApiClient;
 import com.dfl.grevesapp.webservices.HaGrevesServices;
+
+import java.util.Calendar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +42,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     private int startId;
 
     /**
-     * set alarm up
+     * set alarm up, everyday at 18pm
      * @param am alarmmanager
      * @param context context
      */
@@ -47,7 +50,10 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         Intent intent = new Intent(context, UpdateService.class);
         intent.setAction(UPDATE_ACTION);
         PendingIntent pendingIntent = PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, 5000, UPDATES_INTERVAL, pendingIntent);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), UPDATES_INTERVAL, pendingIntent);
     }
 
     /**
@@ -90,6 +96,17 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         return null;
     }
 
+
+    /**
+     * check preference value
+     * @param key key to check for
+     * @return true if checked
+     */
+    private boolean checkPreference(String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return prefs.getBoolean(key, true);
+    }
+
     /**
      * create notification for a strike
      * @param strike strike for the notification info
@@ -127,15 +144,5 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     @Override
     public void onFailure(Call<Strike[]> call, Throwable t) {
         stopSelf(startId);
-    }
-
-    /**
-     * check preference value
-     * @param key key to check for
-     * @return true if checked
-     */
-    private boolean checkPreference(String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        return prefs.getBoolean(key, true);
     }
 }

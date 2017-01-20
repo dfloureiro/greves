@@ -1,5 +1,6 @@
 package com.dfl.grevesapp.datamodels;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import lombok.Setter;
  *
  * class company
  */
-public class Company {
-    @Getter @Setter private String name;
-    @Getter @Setter private int id;
+@Data public class Company {
+    private String name;
+    private int id;
 }
