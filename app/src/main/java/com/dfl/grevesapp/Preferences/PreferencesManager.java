@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 
 public class PreferencesManager {
 
-    public boolean getAllowNotifications(Context context){
+    public static boolean getAllowNotifications(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(PreferencesKeys.ALLOW_NOTIFICATIONS, true);
     }
