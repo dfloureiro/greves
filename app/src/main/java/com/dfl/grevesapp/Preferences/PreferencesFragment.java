@@ -1,5 +1,6 @@
 package com.dfl.grevesapp.Preferences;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-        getCompanies();
+        getCompanies(getActivity().getBaseContext());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         PreferenceCategory companiesCategory = (PreferenceCategory)findPreference(getString(R.string.companies));
@@ -81,9 +82,10 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     /**
      * get Companies
      */
-    private void getCompanies() { // TODO: 16/01/2017 refactor ws
-        HaGrevesServices apiService = ApiClient.getClient(getActivity().getBaseContext()).create(HaGrevesServices.class);
+    private void getCompanies(final Context context) { // TODO: 16/01/2017 refactor ws
+        HaGrevesServices apiService = ApiClient.getClient(context).create(HaGrevesServices.class);
         Call<Company[]> call = apiService.getCompanies();
+        final PreferenceCategory companiesCategory = (PreferenceCategory)findPreference(getString(R.string.companies));
         call.enqueue(new Callback<Company[]>() {
             @Override
             public void onResponse(Call<Company[]> call, Response<Company[]> response) {
@@ -91,10 +93,8 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
                 Collections.addAll(companies, response.body());
                 CompaniesUtils.sortCompanies(companies);
 
-                PreferenceCategory companiesCategory = (PreferenceCategory)findPreference(getString(R.string.companies));
-
                 for(Company company : companies) {
-                    CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getActivity());
+                    CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
                     checkBoxPreference.setKey(company.getName());
                     checkBoxPreference.setTitle(company.getName());
                     checkBoxPreference.setChecked(true);
