@@ -52,14 +52,14 @@ public class CompaniesUtils{
     }
 
     /**
-     * order companies by id
+     * order companies by name
      * @param companies list of companies
      */
     public static void sortCompanies(ArrayList<Company> companies){
         Comparator<Company> comparator = new Comparator<Company>() {
             @Override
             public int compare(Company c1, Company c2) {
-                return c2.getId() - c1.getId();
+                return c1.getName().compareTo(c2.getName());
             }
         };
         Collections.sort(companies, comparator);

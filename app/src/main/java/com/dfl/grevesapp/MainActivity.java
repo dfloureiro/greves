@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
-import com.dfl.grevesapp.Preferences.PreferencesManager;
 import com.dfl.grevesapp.Utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.services.UpdateService;
@@ -29,7 +27,7 @@ import com.dfl.grevesapp.webservices.ApiClient;
 import com.dfl.grevesapp.webservices.HaGrevesServices;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -228,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                StrikesUtils.sortStrikes(strikes);
+                StrikesUtils.sortSrikeDate(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
                 recyclerView.setAdapter(adapter);
                 hideLoading();
@@ -256,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                StrikesUtils.sortStrikes(strikes);
+                StrikesUtils.sortSrikeDate(strikes);
                 RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
                 recyclerView.setAdapter(adapter);
                 hideLoading();

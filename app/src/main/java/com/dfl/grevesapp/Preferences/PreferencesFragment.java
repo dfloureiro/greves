@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.dfl.grevesapp.R;
+import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.Utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Company;
 import com.dfl.grevesapp.services.UpdateService;
@@ -88,6 +89,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
             public void onResponse(Call<Company[]> call, Response<Company[]> response) {
                 ArrayList<Company> companies = new ArrayList<>();
                 Collections.addAll(companies, response.body());
+                CompaniesUtils.sortCompanies(companies);
 
                 PreferenceCategory companiesCategory = (PreferenceCategory)findPreference(getString(R.string.companies));
 
