@@ -28,6 +28,6 @@ public class PreferencesManager {
      */
     public static int getIntervalNotification(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt(PreferencesKeys.INTERVAL_NOTIFICATIONS, 3);
+        return Integer.parseInt(prefs.getString(PreferencesKeys.INTERVAL_NOTIFICATIONS, "3"));
     }
 }

@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.dfl.grevesapp.Preferences.PreferencesManager;
 import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.MainActivity;
 import com.dfl.grevesapp.R;
@@ -37,12 +39,12 @@ public class UpdateService extends Service implements Callback<Strike[]> {
 
     private static final String TAG = UpdateService.class.getSimpleName();
     public static final String UPDATE_ACTION = "UPDATE_ACTION";
-    public static final long UPDATES_INTERVAL = AlarmManager.INTERVAL_DAY;
+    public static final long HOUR_INTERVAL = AlarmManager.INTERVAL_HOUR;
     private static final int ALARM_ID = 9876;
     private int startId;
 
     /**
-     * set alarm up, everyday at 18pm
+     * set alarm to fire in 15 minutes, and then every x hours
      * @param am alarmmanager
      * @param context context
      */
@@ -50,10 +52,8 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         Intent intent = new Intent(context, UpdateService.class);
         intent.setAction(UPDATE_ACTION);
         PendingIntent pendingIntent = PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), UPDATES_INTERVAL, pendingIntent);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                PreferencesManager.getIntervalNotification(context)*HOUR_INTERVAL, pendingIntent);
     }
 
     /**
@@ -83,7 +83,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         this.startId = startId;
         if(intent.getAction()!=null && intent.getAction().equals(UPDATE_ACTION)) {
             HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
-            Call<Strike[]> call = apiService.getAllStrikes();
+            Call<Strike[]> call = apiService.getStrikes();
             call.enqueue(this);
         }
         else{
@@ -121,8 +121,8 @@ public class UpdateService extends Service implements Callback<Strike[]> {
                         .setOngoing(false)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), CompaniesUtils.getIconType(strike.getCompany().getName())))
-                        .setContentTitle("Nova Greve!")
-                        .setContentText(strike.getCompany().getName()+" marcou nova greve!")
+                        .setContentTitle(getString(R.string.strike_notification_title))
+                        .setContentText(strike.getCompany().getName()+getString(R.string.strike_notification_text))
                         .build();
 
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
@@ -133,9 +133,11 @@ public class UpdateService extends Service implements Callback<Strike[]> {
 
     @Override
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
-        for(Strike strike :response.body()) {
-            if(checkPreference(strike.getCompany().getName())) {
-                createNotification(strike);
+        if(PreferencesManager.getAllowNotifications(this)) {
+            for (Strike strike : response.body()) {
+                if (checkPreference(strike.getCompany().getName())) {
+                    createNotification(strike);
+                }
             }
         }
         stopSelf(startId);

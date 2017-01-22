@@ -40,4 +40,6 @@
     <string name="error_loading_companies">Erro a carregar as empresas</string>
     <string name="interval_notifications_summary">Intervalo entre atualizações sobre novas greves</string>
     <string name="interval_notifications_title">Intervalo entre atualizações</string>
+    <string name="strike_notification_text">" marcou nova greve!"</string>
+    <string name="strike_notification_title">Nova Greve!</string>
 </resources>
