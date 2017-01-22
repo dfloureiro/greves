@@ -10,6 +10,15 @@
             android:key="allownotifications"
             android:title="@string/allow_notifications"
             android:summary="@string/allow_notifications_summary" />
+
+        <ListPreference
+            android:defaultValue="3"
+            android:key="intervalnotifications"
+            android:entries="@array/intervals"
+            android:entryValues="@array/intervalsData"
+            android:title="@string/interval_notifications_title"
+            android:summary="@string/interval_notifications_summary"
+        />
     </PreferenceCategory>
 
     <PreferenceCategory

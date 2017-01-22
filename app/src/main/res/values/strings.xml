@@ -38,4 +38,6 @@
     <string name="service_name">Últimas Greves</string>
     <string name="companies_summary">Receber notificações das seguintes empresas</string>
     <string name="error_loading_companies">Erro a carregar as empresas</string>
+    <string name="interval_notifications_summary">Intervalo entre atualizações sobre novas greves</string>
+    <string name="interval_notifications_title">Intervalo entre atualizações</string>
 </resources>

@@ -5,6 +5,7 @@ package com.dfl.grevesapp.Preferences;
  *
  */
 
-public class PreferencesKeys {
+class PreferencesKeys {
     final static String ALLOW_NOTIFICATIONS = "allownotifications";
+    final static String INTERVAL_NOTIFICATIONS = "intervalnotifications";
 }
