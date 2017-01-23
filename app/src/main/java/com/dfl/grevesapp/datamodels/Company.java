@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class Company extends RealmObject {
-    private String name;
     @PrimaryKey
     private int id;
+    private String name;
 }

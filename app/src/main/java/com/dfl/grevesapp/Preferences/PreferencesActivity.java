@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
- *
+ * <p>
  * Preferences Activity
  */
 

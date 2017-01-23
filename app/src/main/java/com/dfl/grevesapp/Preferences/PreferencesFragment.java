@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
- *
+ * <p>
  * Preferences Fragment implementation
  */
 
