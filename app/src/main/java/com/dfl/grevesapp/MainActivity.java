@@ -12,13 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
 import com.dfl.grevesapp.Utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Strike;
@@ -28,6 +29,7 @@ import com.dfl.grevesapp.webservices.HaGrevesServices;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //views resources
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     private DrawerLayout drawer;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBar progressBar;
@@ -193,6 +195,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         outState.putBoolean(SHOWALLSTRIKES,showAllStrikes);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Database.close();
+    }
+
     /**
      * all strikes request. returns all strikes, including the ones that already finished
      */
@@ -204,19 +212,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                StrikesUtils.sortSrikeDate(strikes);
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
-                recyclerView.setAdapter(adapter);
-                hideLoading();
-                if(response.body().length == 0){
-                    showNoStrikesScreen();
-                }
+                handleOnResponse(strikes);
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
-                hideLoading();
-                showNoStrikesScreen();
+                Database.init(getBaseContext());
+                RealmResults<Strike> strikes = Database.getAllStrikes();
+                if(strikes!=null) {
+                    showStrikes(new ArrayList<>(strikes));
+                }
+                else{
+                    showStrikes(null);
+                }
             }
         });
     }
@@ -232,21 +240,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
                 Collections.addAll(strikes, response.body());
-                StrikesUtils.sortSrikeDate(strikes);
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
-                recyclerView.setAdapter(adapter);
-                hideLoading();
-                if(response.body().length == 0){
-                    showNoStrikesScreen();
+                for(Strike strike : strikes){
+                    strike.setOn_going(true);
                 }
+                handleOnResponse(strikes);
             }
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
-                hideLoading();
-                showNoStrikesScreen();
+                Database.init(getBaseContext());
+                RealmResults<Strike> strikes = Database.getStrikes();
+                if(strikes!=null) {
+                    showStrikes(new ArrayList<>(strikes));
+                }
+                else{
+                    showStrikes(null);
+                }
             }
         });
+    }
+
+    /**
+     * on strikes request success
+     * @param strikes list of strikes
+     */
+    private void handleOnResponse(ArrayList<Strike> strikes){
+        StrikesUtils.sortSrikeDate(strikes);
+        Database.init(getBaseContext());
+        Database.addStrikes(strikes);
+        showStrikes(strikes);
+    }
+
+    /**
+     * show strikes in the recycler view
+     * @param strikes arraylist of strikes
+     */
+    private void showStrikes(ArrayList<Strike> strikes){
+        if(strikes!=null) {
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
+            recyclerView.setAdapter(adapter);
+            hideLoading();
+        }
+        if(strikes==null || strikes.isEmpty()){
+            showNoStrikesScreen();
+        }
     }
 
     /**

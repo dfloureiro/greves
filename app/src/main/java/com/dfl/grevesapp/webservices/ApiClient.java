@@ -16,22 +16,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
- *
+ * <p>
  * api client setup
  */
 public class ApiClient {
 
     private static final String BASE_URL = "http://hagreve.com/api/";
     private static Retrofit retrofit = null;
-    private static boolean isOnline;
 
     /**
      * get client
+     *
      * @param context app context
      * @return retrofit client
      */
     public static Retrofit getClient(Context context) {
-        isOnline = isNetworkConnected(context);
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -44,6 +43,7 @@ public class ApiClient {
 
     /**
      * setup client to the retrofit
+     *
      * @param context app context
      * @return client with the cache applied
      */
@@ -67,27 +67,10 @@ public class ApiClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
-            if (isOnline) {
-                int maxAge = 60; // read from cache for 1 minute
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
+            int maxAge = 60;
+            return originalResponse.newBuilder()
+                    .header("Cache-Control", "public, max-age=" + maxAge)
+                    .build();
         }
     };
-
-    /**
-     * check if network is connected
-     * @param context app context
-     * @return true if network is connected
-     */
-    private static boolean isNetworkConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
 }

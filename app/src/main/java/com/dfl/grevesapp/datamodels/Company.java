@@ -1,15 +1,17 @@
 package com.dfl.grevesapp.datamodels;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  *
  * class company
  */
-@Data public class Company {
+@EqualsAndHashCode(callSuper = false)
+@Data public class Company extends RealmObject {
     private String name;
-    private int id;
+    @PrimaryKey private int id;
 }

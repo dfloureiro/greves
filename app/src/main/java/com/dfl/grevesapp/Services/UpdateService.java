@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.Preferences.PreferencesManager;
 import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.MainActivity;
@@ -24,7 +25,9 @@ import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.webservices.ApiClient;
 import com.dfl.grevesapp.webservices.HaGrevesServices;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -133,13 +136,21 @@ public class UpdateService extends Service implements Callback<Strike[]> {
 
     @Override
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
+        ArrayList<Strike> strikes = new ArrayList<>();
+        Collections.addAll(strikes, response.body());
+        for(Strike strike : strikes){
+            strike.setOn_going(true);
+        }
+        Database.init(getBaseContext());
+        Database.addStrikes(strikes);
         if(PreferencesManager.getAllowNotifications(this)) {
-            for (Strike strike : response.body()) {
+            for (Strike strike : strikes) {
                 if (checkPreference(strike.getCompany().getName())) {
                     createNotification(strike);
                 }
             }
         }
+        Database.close();
         stopSelf(startId);
     }
 
