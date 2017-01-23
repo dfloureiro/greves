@@ -10,26 +10,28 @@ import android.view.ViewGroup;
 
 import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Strike;
+
 import java.text.DateFormatSymbols;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
  * Created by Diogo Loureiro on 05/11/2016.
- *
+ * <p>
  * recycler view adapter
  */
-class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
+class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder> {
 
     private List<Strike> strikes;
     private Context context;
 
     /**
      * constructor
+     *
      * @param strikes list of strikes
      * @param context context of the main activity
      */
-    RecyclerViewAdapter(List<Strike> strikes, Context context){
+    RecyclerViewAdapter(List<Strike> strikes, Context context) {
         this.strikes = strikes;
         this.context = context;
     }
@@ -49,9 +51,9 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
 
         //set text/image values to the card
         strikerViewHolder.getEndDate().setText(context.getResources().getString(R.string.ends_at)
-                +endDay.get(GregorianCalendar.DAY_OF_MONTH)+" "
-                +getMonthForInt(beginDay.get(GregorianCalendar.MONTH))+" "
-                +endDay.get(GregorianCalendar.YEAR));
+                + endDay.get(GregorianCalendar.DAY_OF_MONTH) + " "
+                + getMonthForInt(beginDay.get(GregorianCalendar.MONTH)) + " "
+                + endDay.get(GregorianCalendar.YEAR));
         strikerViewHolder.getWeekday().setText(getWeekdayForInt(beginDay.get(GregorianCalendar.DAY_OF_WEEK)));
         strikerViewHolder.getDay().setText(String.valueOf(beginDay.get(GregorianCalendar.DAY_OF_MONTH)));
         strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH)));
@@ -61,7 +63,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
         strikerViewHolder.getImageView().setImageResource(CompaniesUtils.getIconType(strikes.get(i).getCompany().getName()));
 
         //set button visible if the strike is canceled
-        if(strikes.get(i).isCanceled()){
+        if (strikes.get(i).isCanceled()) {
             strikerViewHolder.getCancelled().setVisibility(View.VISIBLE);
         }
 
@@ -106,20 +108,22 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
 
     /**
      * parse string of date to a gregorian calendar variable
+     *
      * @param date string of date to parse
      * @return gregorian calendar with all data from date
      */
-    private GregorianCalendar parseDate(String date){
+    private GregorianCalendar parseDate(String date) {
         String[] mDate = date.split(" ");
         String[] dates = mDate[0].split("-");
         String[] hours = mDate[1].split(":");
-        return new GregorianCalendar(Integer.valueOf(dates[0]),Integer.valueOf(dates[1]),
-                Integer.valueOf(dates[2]),Integer.valueOf(hours[0]),Integer.valueOf(hours[1]),
+        return new GregorianCalendar(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]),
+                Integer.valueOf(dates[2]), Integer.valueOf(hours[0]), Integer.valueOf(hours[1]),
                 Integer.valueOf(hours[2]));
     }
 
     /**
      * turn int to a valid month string
+     *
      * @param num number of the month
      * @return string of the month
      */
@@ -127,7 +131,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
         String month = "wrong";
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] months = dfs.getMonths();
-        if (num >= 0 && num <= 11 ) {
+        if (num >= 0 && num <= 11) {
             month = months[num];
         }
         return month;
@@ -135,6 +139,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
 
     /**
      * turn int to a valid weekday string
+     *
      * @param num number of the weekday
      * @return string of the month
      */
@@ -142,7 +147,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder>{
         String weekday = "wrong";
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] weekdays = dfs.getWeekdays();
-        if (num >= 0 && num <= 7 ) {
+        if (num >= 0 && num <= 7) {
             weekday = weekdays[num];
         }
         return weekday;

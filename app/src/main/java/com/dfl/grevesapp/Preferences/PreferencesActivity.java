@@ -7,6 +7,7 @@ import android.view.MenuItem;
 /**
  * Created by Diogo Loureiro on 09/11/2016.
  *
+ * Preferences Activity
  */
 
 public class PreferencesActivity extends AppCompatActivity {
@@ -14,7 +15,7 @@ public class PreferencesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }

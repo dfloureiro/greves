@@ -9,17 +9,18 @@ import java.util.Comparator;
 
 /**
  * Created by Diogo Loureiro on 02/01/2017.
- *
+ * <p>
  * Companies Utils
  */
-public class CompaniesUtils{
+public class CompaniesUtils {
     /**
      * return the icon type of the company
+     *
      * @param company company on strike
      * @return id of the resource
      */
-    public static int getIconType(String company){
-        switch (company){
+    public static int getIconType(String company) {
+        switch (company) {
             case "Metro de Lisboa":
                 return R.drawable.ic_subway;
             case "Metro do Porto":
@@ -53,9 +54,10 @@ public class CompaniesUtils{
 
     /**
      * order companies by name
+     *
      * @param companies list of companies
      */
-    public static void sortCompanies(ArrayList<Company> companies){
+    public static void sortCompanies(ArrayList<Company> companies) {
         Comparator<Company> comparator = new Comparator<Company>() {
             @Override
             public int compare(Company c1, Company c2) {

@@ -2,11 +2,8 @@ package com.dfl.grevesapp.webservices;
 
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-
 import java.io.File;
 import java.io.IOException;
-
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -67,7 +64,7 @@ public class ApiClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
-            int maxAge = 60;
+            int maxAge = 60; //1 minute
             return originalResponse.newBuilder()
                     .header("Cache-Control", "public, max-age=" + maxAge)
                     .build();

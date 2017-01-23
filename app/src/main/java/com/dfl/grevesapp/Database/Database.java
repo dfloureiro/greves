@@ -1,9 +1,12 @@
 package com.dfl.grevesapp.Database;
 
 import android.content.Context;
+
 import com.dfl.grevesapp.datamodels.Company;
 import com.dfl.grevesapp.datamodels.Strike;
+
 import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -71,11 +74,10 @@ public class Database {
     }
 
     /**
-     *
      * @return list of current strikes sorted by start_date
      */
     public static RealmResults<Strike> getStrikes() {
-        return get().where(Strike.class).equalTo("on_going",true).findAllSorted("start_date", Sort.DESCENDING);
+        return get().where(Strike.class).equalTo("on_going", true).findAllSorted("start_date", Sort.DESCENDING);
     }
 
     /**

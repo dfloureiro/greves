@@ -8,13 +8,10 @@ import android.preference.CheckBoxPreference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.Utils.CompaniesUtils;
-import com.dfl.grevesapp.Utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Company;
 import com.dfl.grevesapp.services.UpdateService;
 import com.dfl.grevesapp.webservices.ApiClient;
@@ -30,6 +27,8 @@ import retrofit2.Response;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
+ *
+ * Preferences Fragment implementation
  */
 
 public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -38,7 +37,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
         getCompanies(getActivity().getBaseContext());
 
@@ -54,14 +52,12 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onResume() {
         super.onResume();
-        // Set up a listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
@@ -119,9 +115,10 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
     /**
      * add checkboxes
-     * @param company company to add
+     *
+     * @param company           company to add
      * @param companiesCategory category
-     * @param context context
+     * @param context           context
      */
     public static void addCheckboxes(Company company, PreferenceCategory companiesCategory, Context context) {
         CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);

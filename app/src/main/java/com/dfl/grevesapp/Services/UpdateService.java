@@ -14,7 +14,6 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.Preferences.PreferencesManager;
@@ -26,7 +25,6 @@ import com.dfl.grevesapp.webservices.ApiClient;
 import com.dfl.grevesapp.webservices.HaGrevesServices;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 
 import retrofit2.Call;
@@ -35,7 +33,7 @@ import retrofit2.Response;
 
 /**
  * Created by Diogo Loureiro on 09/11/2016.
- *
+ * <p>
  * Service to check for new updates on strikes
  */
 public class UpdateService extends Service implements Callback<Strike[]> {
@@ -48,19 +46,21 @@ public class UpdateService extends Service implements Callback<Strike[]> {
 
     /**
      * set alarm to fire in 15 minutes, and then every x hours
-     * @param am alarmmanager
+     *
+     * @param am      alarmmanager
      * @param context context
      */
     public static void setAlarm(AlarmManager am, Context context) {
         Intent intent = new Intent(context, UpdateService.class);
         intent.setAction(UPDATE_ACTION);
         PendingIntent pendingIntent = PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                PreferencesManager.getIntervalNotification(context)*HOUR_INTERVAL, pendingIntent);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                PreferencesManager.getIntervalNotification(context) * HOUR_INTERVAL, pendingIntent);
     }
 
     /**
      * check if alarm is up
+     *
      * @param context context
      * @return true when alarm is up
      */
@@ -70,7 +70,8 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         return (PendingIntent.getService(context, ALARM_ID, intent, PendingIntent.FLAG_NO_CREATE) != null);
     }
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
         if (!isAlarmUp(this)) {
@@ -78,43 +79,48 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         }
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
     }
 
-    @Override public int onStartCommand(Intent intent, int flags, int startId) {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         this.startId = startId;
-        if(intent.getAction()!=null && intent.getAction().equals(UPDATE_ACTION)) {
+        if (intent.getAction() != null && intent.getAction().equals(UPDATE_ACTION)) {
             HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
             Call<Strike[]> call = apiService.getStrikes();
             call.enqueue(this);
-        }
-        else{
+        } else {
             stopSelf(startId);
         }
         return START_NOT_STICKY;
     }
 
-    @Nullable @Override public IBinder onBind(Intent intent) {
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
         return null;
     }
 
 
     /**
      * check preference value
+     *
      * @param key key to check for
      * @return true if checked
      */
-    private boolean checkPreference(String key){
+    private boolean checkPreference(String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         return prefs.getBoolean(key, true);
     }
 
     /**
      * create notification for a strike
+     *
      * @param strike strike for the notification info
      */
-    private void createNotification(Strike strike){
+    private void createNotification(Strike strike) {
         Intent resultIntent = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -125,7 +131,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), CompaniesUtils.getIconType(strike.getCompany().getName())))
                         .setContentTitle(getString(R.string.strike_notification_title))
-                        .setContentText(strike.getCompany().getName()+getString(R.string.strike_notification_text))
+                        .setContentText(strike.getCompany().getName() + getString(R.string.strike_notification_text))
                         .build();
 
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
@@ -138,12 +144,12 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
         ArrayList<Strike> strikes = new ArrayList<>();
         Collections.addAll(strikes, response.body());
-        for(Strike strike : strikes){
+        for (Strike strike : strikes) {
             strike.setOn_going(true);
         }
         Database.init(getBaseContext());
         Database.addStrikes(strikes);
-        if(PreferencesManager.getAllowNotifications(this)) {
+        if (PreferencesManager.getAllowNotifications(this)) {
             for (Strike strike : strikes) {
                 if (checkPreference(strike.getCompany().getName())) {
                     createNotification(strike);
