@@ -2,7 +2,9 @@ package com.dfl.grevesapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder> {
         //set button visible if the strike is canceled
         if (strikes.get(i).isCanceled()) {
             strikerViewHolder.getCancelled().setVisibility(View.VISIBLE);
+            strikerViewHolder.getCancelled().getBackground()
+                    .setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
         }
 
         //set button to the source link
