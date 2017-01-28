@@ -67,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState != null) {
             recyclerViewOption = RecyclerViewOption.valueOf(savedInstanceState.getString(RECYCLERVIEW_OPTION));
-        }
-        else {
+        } else {
             recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
         }
 

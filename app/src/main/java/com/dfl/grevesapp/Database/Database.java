@@ -19,6 +19,8 @@ import io.realm.Sort;
 
 public class Database {
 
+    private static boolean isInit = false;
+
     /**
      * init database
      *
@@ -26,6 +28,7 @@ public class Database {
      */
     public static void init(Context context) {
         Realm.init(context);
+        isInit = true;
     }
 
     /**
@@ -84,6 +87,8 @@ public class Database {
      * close database
      */
     public static void close() {
-        get().close();
+        if (isInit) {
+            get().close();
+        }
     }
 }
