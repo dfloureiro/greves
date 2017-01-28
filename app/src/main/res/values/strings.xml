@@ -42,4 +42,11 @@
     <string name="interval_notifications_title">Intervalo entre atualizações</string>
     <string name="strike_notification_text">" marcou nova greve!"</string>
     <string name="strike_notification_title">Nova Greve!</string>
+    <string name="lisbon_subway_title_text">Estado das linhas do Metro de Lisboa:</string>
+    <string name="porto_subway_title_text">Estado das linhas do Metro do Porto:</string>
+    <string name="yellow">Amarela</string>
+    <string name="blue">Azul</string>
+    <string name="green">Verde</string>
+    <string name="red">Vermelha</string>
+    <string name="ok">OK</string>
 </resources>

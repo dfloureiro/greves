@@ -3,4 +3,15 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="buttonTextColor">#ffffff</color>
+    <color name="lisbonSubwayLineYellow">#FDB813</color>
+    <color name="lisbonSubwayLineBlue">#4D85C5</color>
+    <color name="lisbonSubwayLineGreen">#00A9A7</color>
+    <color name="lisbonSubwayLineRed">#EE2375</color>
+    <color name="portoSubwayLineA">#13A5CC</color>
+    <color name="portoSubwayLineB">#D92F22</color>
+    <color name="portoSubwayLineC">#72AA23</color>
+    <color name="portoSubwayLineD">#F4AB11</color>
+    <color name="portoSubwayLineE">#655E94</color>
+    <color name="portoSubwayLineF">#F16B22</color>
 </resources>

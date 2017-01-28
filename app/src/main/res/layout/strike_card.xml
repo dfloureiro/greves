@@ -118,7 +118,7 @@
                     android:layout_alignParentTop="true"
                     android:background="@drawable/round_rectangle"
                     android:text="@string/see_source"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/buttonTextColor"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
 
@@ -133,7 +133,7 @@
                     android:background="@drawable/round_rectangle"
                     android:clickable="false"
                     android:text="@string/cancelled"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/buttonTextColor"
                     android:textSize="10sp"
                     android:visibility="gone"
                     tools:ignore="SmallSp" />
