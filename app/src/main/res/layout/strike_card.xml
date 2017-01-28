@@ -3,107 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/cardView"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="7dp"
-            >
+            android:padding="7dp">
 
             <TextView
+                android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/companyName"
                 android:layout_alignParentTop="true"
-                android:textSize="22sp"
-                android:text="@string/company"
+                android:layout_toEndOf="@+id/leftLayout"
+                android:layout_toLeftOf="@+id/cardImage"
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toStartOf="@+id/cardImage"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_toLeftOf="@+id/cardImage"
-                android:layout_toStartOf="@+id/cardImage"
-                android:layout_toRightOf="@+id/leftLayout"
-                android:layout_toEndOf="@+id/leftLayout" />
+                android:text="@string/company"
+                android:textSize="22sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/endDate"
-                android:layout_below="@+id/companyName"
-                android:textSize="15sp"
-                android:text="@string/end_of_day"
-                android:paddingTop="7dp"
-                android:layout_toLeftOf="@+id/cardImage"
-                android:layout_toStartOf="@+id/cardImage"
-                android:layout_toRightOf="@+id/leftLayout"
-                android:layout_toEndOf="@+id/leftLayout" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/description"
-                android:layout_below="@+id/endDate"
-                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_below="@+id/companyName"
                 android:layout_toEndOf="@+id/leftLayout"
+                android:layout_toLeftOf="@+id/cardImage"
+                android:layout_toRightOf="@+id/leftLayout"
+                android:layout_toStartOf="@+id/cardImage"
+                android:paddingTop="7dp"
+                android:text="@string/end_of_day"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/endDate"
+                android:layout_toEndOf="@+id/leftLayout"
+                android:layout_toRightOf="@+id/leftLayout"
                 android:paddingTop="10dp"
                 android:text="@string/description"
-                android:textSize="12sp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:textSize="12sp" />
 
             <RelativeLayout
+                android:id="@+id/leftLayout"
                 android:layout_width="78dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/leftLayout"
-                android:paddingTop="7dp"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingTop="7dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/weekday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:textSize="12sp"
                     android:text="@string/weekday"
-                    />
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/day"
-                    android:textSize="30sp"
-                    android:text="@string/day"
-                    android:layout_below="@+id/weekday"
-                    android:layout_centerHorizontal="true" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/weekday"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/day"
+                    android:textSize="30sp" />
+
+                <TextView
                     android:id="@+id/month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/day"
                     android:layout_centerHorizontal="true"
-                    android:textSize="12sp"
                     android:text="@string/month"
-                    />
+                    android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/year"
                     android:layout_below="@+id/month"
                     android:layout_centerHorizontal="true"
-                    android:textSize="12sp"
                     android:text="@string/year"
-                    />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -111,59 +105,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description"
-                android:paddingTop="7dp"
+                android:layout_toEndOf="@+id/leftLayout"
                 android:layout_toRightOf="@+id/leftLayout"
-                android:layout_toEndOf="@+id/leftLayout">
+                android:paddingTop="7dp">
 
                 <Button
+                    android:id="@+id/source"
                     android:layout_width="70dp"
                     android:layout_height="20dp"
-                    android:text="@string/see_source"
-                    android:textSize="10sp"
-                    android:background="@drawable/round_rectangle_source"
-                    android:textColor="#ffffff"
-                    android:id="@+id/source"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/round_rectangle_source"
+                    android:text="@string/see_source"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
                     tools:ignore="SmallSp" />
 
                 <Button
+                    android:id="@+id/canceled"
                     android:layout_width="90dp"
                     android:layout_height="20dp"
-                    android:id="@+id/canceled"
-                    android:text="@string/cancelled"
-                    android:textSize="10sp"
-                    android:background="@drawable/round_rectangle_canceled"
-                    android:textColor="#ffffff"
-                    android:clickable="false"
-                    android:layout_toRightOf="@+id/source"
-                    android:layout_toEndOf="@+id/source"
                     android:layout_marginLeft="12dp"
                     android:layout_marginStart="12dp"
+                    android:layout_toEndOf="@+id/source"
+                    android:layout_toRightOf="@+id/source"
+                    android:background="@drawable/round_rectangle_canceled"
+                    android:clickable="false"
+                    android:text="@string/cancelled"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
                     android:visibility="gone"
                     tools:ignore="SmallSp" />
 
                 <ImageView
+                    android:id="@+id/share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/share"
-                    android:src="@drawable/ic_menu_share"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:clickable="true"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_menu_share" />
 
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/cardImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cardImage"
-                android:src="@drawable/ic_megaphone"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:contentDescription="@string/app_name" />
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_megaphone" />
 
         </RelativeLayout>
 
