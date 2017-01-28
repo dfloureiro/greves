@@ -22,10 +22,12 @@ import android.widget.Toast;
 import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
 import com.dfl.grevesapp.Utils.StrikesUtils;
+import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.services.UpdateService;
 import com.dfl.grevesapp.webservices.ApiClient;
 import com.dfl.grevesapp.webservices.HaGrevesServices;
+import com.dfl.grevesapp.webservices.MetroLisboaServices;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +45,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //
-    private String SHOWALLSTRIKES = "SHOWALLSTRIKES";
+    private String RECYCLERVIEW_OPTION = "RECYCLERVIEW_OPTION";
 
     //views resources
     private Toolbar toolbar;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView noStrikesText;
 
     //has value of the type of request
-    private boolean showAllStrikes = false;
+    private RecyclerViewOption recyclerViewOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bindViews();
 
         if (savedInstanceState != null) {
-            showAllStrikes = savedInstanceState.getBoolean(SHOWALLSTRIKES);
+            recyclerViewOption = RecyclerViewOption.valueOf(savedInstanceState.getString(RECYCLERVIEW_OPTION));
+        }
+        else {
+            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
         }
 
         setSupportActionBar(toolbar);
@@ -115,10 +120,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         noStrikesText.setVisibility(View.GONE);
         recyclerView.removeAllViews();
         progressBar.setVisibility(View.VISIBLE);
-        if (showAllStrikes) {
-            getAllStrikes();
-        } else {
-            getStrikes();
+        switch (recyclerViewOption) {
+            case GENERAL_STATUS:
+                getLisbonSubwayLineStatus();
+                break;
+            case CURRENT_STRIKES:
+                getStrikes();
+                break;
+            case ALL_STRIKES:
+                getAllStrikes();
+                break;
         }
     }
 
@@ -138,11 +149,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_strikes) {
-            showAllStrikes = false;
+        if (id == R.id.nav_generalStatus) {
+            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
+            refreshRecycleView();
+        } else if (id == R.id.nav_strikes) {
+            recyclerViewOption = RecyclerViewOption.CURRENT_STRIKES;
             refreshRecycleView();
         } else if (id == R.id.nav_allStrikes) {
-            showAllStrikes = true;
+            recyclerViewOption = RecyclerViewOption.ALL_STRIKES;
             refreshRecycleView();
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(getBaseContext(), PreferencesActivity.class));
@@ -192,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(SHOWALLSTRIKES, showAllStrikes);
+        outState.putString(RECYCLERVIEW_OPTION, recyclerViewOption.toString());
     }
 
     @Override
@@ -205,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * all strikes request. returns all strikes, including the ones that already finished
      */
     private void getAllStrikes() { // TODO: 16/01/2017 refactor ws
-        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
+        HaGrevesServices apiService = ApiClient.getClientHaGreve(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getAllStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
@@ -232,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * strikes request. returns strikes, only the ones that are happening or about to
      */
     private void getStrikes() { // TODO: 16/01/2017 refactor ws 
-        HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
+        HaGrevesServices apiService = ApiClient.getClientHaGreve(getBaseContext()).create(HaGrevesServices.class);
         Call<Strike[]> call = apiService.getStrikes();
         call.enqueue(new Callback<Strike[]>() {
             @Override
@@ -287,6 +301,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * lisbon subway lines status
+     */
+    private void getLisbonSubwayLineStatus() { // TODO: 16/01/2017 refactor ws
+        MetroLisboaServices apiService = ApiClient.getClientLisbonSubway(getBaseContext()).create(MetroLisboaServices.class);
+        Call<LisbonSubwayLinesStatus> call = apiService.getLineStatus();
+        call.enqueue(new Callback<LisbonSubwayLinesStatus>() {
+            @Override
+            public void onResponse(Call<LisbonSubwayLinesStatus> call, Response<LisbonSubwayLinesStatus> response) {
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(response.body(), getBaseContext());
+                recyclerView.setAdapter(adapter);
+                hideLoading();
+            }
+
+            @Override
+            public void onFailure(Call<LisbonSubwayLinesStatus> call, Throwable t) {
+                // TODO: 28/01/2017 no net!
+                hideLoading();
+            }
+        });
+    }
+
+    /**
      * hide loading elements
      */
     private void hideLoading() {
@@ -300,5 +336,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showNoStrikesScreen() {
         noStrikesIcon.setVisibility(View.VISIBLE);
         noStrikesText.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * possible recyclerview options
+     */
+    private enum RecyclerViewOption {
+        GENERAL_STATUS, CURRENT_STRIKES, ALL_STRIKES
     }
 }

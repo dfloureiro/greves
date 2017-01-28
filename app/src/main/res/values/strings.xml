@@ -49,4 +49,5 @@
     <string name="green">Verde</string>
     <string name="red">Vermelha</string>
     <string name="ok">OK</string>
+    <string name="general_status">Resumo geral</string>
 </resources>

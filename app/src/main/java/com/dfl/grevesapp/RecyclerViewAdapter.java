@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dfl.grevesapp.Utils.CompaniesUtils;
+import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
 import com.dfl.grevesapp.datamodels.Strike;
 
 import java.text.DateFormatSymbols;
@@ -22,9 +23,10 @@ import java.util.List;
  * <p>
  * recycler view adapter
  */
-class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder> {
+class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Strike> strikes;
+    private LisbonSubwayLinesStatus lisbonSubwayLinesStatus;
     private Context context;
 
     /**
@@ -38,61 +40,92 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder> {
         this.context = context;
     }
 
-    @Override
-    public StrikerViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.strike_card, viewGroup, false);
-        return new StrikerViewHolder(view);
+    /**
+     * constructor
+     *
+     * @param lisbonSubwayLinesStatus lisbon subway lines status
+     * @param context                 context
+     */
+    RecyclerViewAdapter(LisbonSubwayLinesStatus lisbonSubwayLinesStatus, Context context) {
+        this.lisbonSubwayLinesStatus = lisbonSubwayLinesStatus;
+        this.context = context;
     }
 
     @Override
-    public void onBindViewHolder(StrikerViewHolder strikerViewHolder, int i) {
-
-        //call the parse to the dares
-        GregorianCalendar beginDay = parseDate(strikes.get(i).getStart_date());
-        GregorianCalendar endDay = parseDate(strikes.get(i).getEnd_date());
-
-        //set text/image values to the card
-        strikerViewHolder.getEndDate().setText(context.getResources().getString(R.string.ends_at)
-                + endDay.get(GregorianCalendar.DAY_OF_MONTH) + " "
-                + getMonthForInt(beginDay.get(GregorianCalendar.MONTH)) + " "
-                + endDay.get(GregorianCalendar.YEAR));
-        strikerViewHolder.getWeekday().setText(getWeekdayForInt(beginDay.get(GregorianCalendar.DAY_OF_WEEK)));
-        strikerViewHolder.getDay().setText(String.valueOf(beginDay.get(GregorianCalendar.DAY_OF_MONTH)));
-        strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH)));
-        strikerViewHolder.getYear().setText(String.valueOf(beginDay.get(GregorianCalendar.YEAR)));
-        strikerViewHolder.getCompanyName().setText(strikes.get(i).getCompany().getName());
-        strikerViewHolder.getDescription().setText(strikes.get(i).getDescription());
-        strikerViewHolder.getImageView().setImageResource(CompaniesUtils.getIconType(strikes.get(i).getCompany().getName()));
-
-        //set button visible if the strike is canceled
-        if (strikes.get(i).isCanceled()) {
-            strikerViewHolder.getCancelled().setVisibility(View.VISIBLE);
-            strikerViewHolder.getCancelled().getBackground()
-                    .setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        if (strikes != null) {
+            return new StrikerViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.strike_card, viewGroup, false));
+        } else {
+            return new LisbonSubwayViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.lisbon_subway_lines_card, viewGroup, false));
         }
+    }
 
-        //set button to the source link
-        final String sourceLink = strikes.get(i).getSource_link();
-        strikerViewHolder.getSource().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Uri uri = Uri.parse(sourceLink);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        });
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
 
-        //set button to share the card
-        strikerViewHolder.getShare().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, sourceLink);
-                Intent shareChoose = Intent.createChooser(share, context.getResources().getString(R.string.share_via));
-                shareChoose.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(shareChoose);
+        if (strikes != null) {
+            StrikerViewHolder strikerViewHolder = (StrikerViewHolder) holder;
+            //call the parse to the dares
+            GregorianCalendar beginDay = parseDate(strikes.get(i).getStart_date());
+            GregorianCalendar endDay = parseDate(strikes.get(i).getEnd_date());
+
+            //set text/image values to the card
+            strikerViewHolder.getEndDate().setText(context.getResources().getString(R.string.ends_at)
+                    + endDay.get(GregorianCalendar.DAY_OF_MONTH) + " "
+                    + getMonthForInt(beginDay.get(GregorianCalendar.MONTH)) + " "
+                    + endDay.get(GregorianCalendar.YEAR));
+            strikerViewHolder.getWeekday().setText(getWeekdayForInt(beginDay.get(GregorianCalendar.DAY_OF_WEEK)));
+            strikerViewHolder.getDay().setText(String.valueOf(beginDay.get(GregorianCalendar.DAY_OF_MONTH)));
+            strikerViewHolder.getMonth().setText(getMonthForInt(beginDay.get(GregorianCalendar.MONTH)));
+            strikerViewHolder.getYear().setText(String.valueOf(beginDay.get(GregorianCalendar.YEAR)));
+            strikerViewHolder.getCompanyName().setText(strikes.get(i).getCompany().getName());
+            strikerViewHolder.getDescription().setText(strikes.get(i).getDescription());
+            strikerViewHolder.getImageView().setImageResource(CompaniesUtils.getIconType(strikes.get(i).getCompany().getName()));
+
+            //set button visible if the strike is canceled
+            if (strikes.get(i).isCanceled()) {
+                strikerViewHolder.getCancelled().setVisibility(View.VISIBLE);
+                strikerViewHolder.getCancelled().getBackground()
+                        .setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
             }
-        });
+
+            //set button to the source link
+            final String sourceLink = strikes.get(i).getSource_link();
+            strikerViewHolder.getSource().setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(sourceLink);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+
+            //set button to share the card
+            strikerViewHolder.getShare().setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT, sourceLink);
+                    Intent shareChoose = Intent.createChooser(share, context.getResources().getString(R.string.share_via));
+                    shareChoose.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(shareChoose);
+                }
+            });
+        } else {
+            LisbonSubwayViewHolder lisbonSubwayViewHolder = (LisbonSubwayViewHolder) holder;
+            lisbonSubwayViewHolder.getYellowLineButton().getBackground()
+                    .setColorFilter(ContextCompat.getColor(context, R.color.lisbonSubwayLineYellow), PorterDuff.Mode.SRC_ATOP);
+            lisbonSubwayViewHolder.getBlueLineButton().getBackground()
+                    .setColorFilter(ContextCompat.getColor(context, R.color.lisbonSubwayLineBlue), PorterDuff.Mode.SRC_ATOP);
+            lisbonSubwayViewHolder.getGreenLineButton().getBackground()
+                    .setColorFilter(ContextCompat.getColor(context, R.color.lisbonSubwayLineGreen), PorterDuff.Mode.SRC_ATOP);
+            lisbonSubwayViewHolder.getRedLineButton().getBackground()
+                    .setColorFilter(ContextCompat.getColor(context, R.color.lisbonSubwayLineRed), PorterDuff.Mode.SRC_ATOP);
+            lisbonSubwayViewHolder.getYellowLineStatus().setText(lisbonSubwayLinesStatus.getAmarela());
+            lisbonSubwayViewHolder.getBlueLineStatus().setText(lisbonSubwayLinesStatus.getAzul());
+            lisbonSubwayViewHolder.getGreenLineStatus().setText(lisbonSubwayLinesStatus.getVerde());
+            lisbonSubwayViewHolder.getRedLineStatus().setText(lisbonSubwayLinesStatus.getVermelha());
+        }
     }
 
     @Override
@@ -102,7 +135,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<StrikerViewHolder> {
 
     @Override
     public int getItemCount() {
-        return strikes.size();
+        return strikes != null ? strikes.size() : 1;
     }
 
     @Override

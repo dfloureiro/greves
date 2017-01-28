@@ -2,8 +2,10 @@ package com.dfl.grevesapp.webservices;
 
 
 import android.content.Context;
+
 import java.io.File;
 import java.io.IOException;
+
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -18,24 +20,43 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiClient {
 
-    private static final String BASE_URL = "http://hagreve.com/api/";
-    private static Retrofit retrofit = null;
+    private static final String BASE_URL_HA_GREVE = "http://hagreve.com/api/";
+    private static final String BASE_URL_LISBON_SUBWAY = "http://app.metrolisboa.pt/";
+    private static Retrofit retrofitHaGreve = null;
+    private static Retrofit retrofitLisbonSubway = null;
 
     /**
-     * get client
+     * get client hagreve.com
      *
      * @param context app context
      * @return retrofit client
      */
-    public static Retrofit getClient(Context context) {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+    public static Retrofit getClientHaGreve(Context context) {
+        if (retrofitHaGreve == null) {
+            retrofitHaGreve = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_HA_GREVE)
                     .client(setupClient(context))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit;
+        return retrofitHaGreve;
+    }
+
+    /**
+     * get client metrolisboa.pt
+     *
+     * @param context app context
+     * @return retrofit client
+     */
+    public static Retrofit getClientLisbonSubway(Context context) {
+        if (retrofitLisbonSubway == null) {
+            retrofitLisbonSubway = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_LISBON_SUBWAY)
+                    .client(setupClient(context))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitLisbonSubway;
     }
 
     /**

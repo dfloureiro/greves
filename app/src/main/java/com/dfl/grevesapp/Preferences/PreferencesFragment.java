@@ -85,7 +85,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
      * get Companies
      */
     private void getCompanies(final Context context) { // TODO: 16/01/2017 refactor ws
-        HaGrevesServices apiService = ApiClient.getClient(context).create(HaGrevesServices.class);
+        HaGrevesServices apiService = ApiClient.getClientHaGreve(context).create(HaGrevesServices.class);
         Call<Company[]> call = apiService.getCompanies();
         final PreferenceCategory companiesCategory = (PreferenceCategory) findPreference(getString(R.string.companies));
         call.enqueue(new Callback<Company[]>() {

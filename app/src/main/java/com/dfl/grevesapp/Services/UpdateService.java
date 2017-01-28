@@ -88,7 +88,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.startId = startId;
         if (intent.getAction() != null && intent.getAction().equals(UPDATE_ACTION)) {
-            HaGrevesServices apiService = ApiClient.getClient(getBaseContext()).create(HaGrevesServices.class);
+            HaGrevesServices apiService = ApiClient.getClientHaGreve(getBaseContext()).create(HaGrevesServices.class);
             Call<Strike[]> call = apiService.getStrikes();
             call.enqueue(this);
         } else {

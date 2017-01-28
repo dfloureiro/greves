@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 /**
  * Created by Diogo Loureiro on 05/11/2016.
  * <p>
- * all the view resources of a card
+ * all the view resources of a strike card
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

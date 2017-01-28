@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_generalStatus"
+            android:icon="@drawable/ic_megaphone"
+            android:title="@string/general_status" />
+        <item
             android:id="@+id/nav_strikes"
             android:icon="@drawable/ic_megaphone"
             android:title="@string/last_strikes" />
