@@ -15,9 +15,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 
-import com.dfl.grevesapp.Database.Database;
-import com.dfl.grevesapp.Preferences.PreferencesManager;
-import com.dfl.grevesapp.Utils.CompaniesUtils;
+import com.dfl.grevesapp.database.Database;
+import com.dfl.grevesapp.preferences.PreferencesManager;
+import com.dfl.grevesapp.utils.CompaniesUtils;
 import com.dfl.grevesapp.MainActivity;
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.datamodels.Strike;

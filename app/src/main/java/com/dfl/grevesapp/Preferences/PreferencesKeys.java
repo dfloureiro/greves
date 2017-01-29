@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.Preferences;
+package com.dfl.grevesapp.preferences;
 
 /**
  * Created by Diogo Loureiro on 15/01/2017.

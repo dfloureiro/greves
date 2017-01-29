@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.Preferences;
+package com.dfl.grevesapp.preferences;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,9 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import com.dfl.grevesapp.Database.Database;
+import com.dfl.grevesapp.database.Database;
 import com.dfl.grevesapp.R;
-import com.dfl.grevesapp.Utils.CompaniesUtils;
+import com.dfl.grevesapp.utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Company;
 import com.dfl.grevesapp.services.UpdateService;
 import com.dfl.grevesapp.webservices.ApiClient;

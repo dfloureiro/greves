@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.Database;
+package com.dfl.grevesapp.database;
 
 import android.content.Context;
 

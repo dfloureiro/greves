@@ -19,9 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfl.grevesapp.Database.Database;
-import com.dfl.grevesapp.Preferences.PreferencesActivity;
-import com.dfl.grevesapp.Utils.StrikesUtils;
+import com.dfl.grevesapp.database.Database;
+import com.dfl.grevesapp.preferences.PreferencesActivity;
+import com.dfl.grevesapp.utils.StrikesUtils;
 import com.dfl.grevesapp.datamodels.Card;
 import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
 import com.dfl.grevesapp.datamodels.Strike;

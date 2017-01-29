@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.Preferences;
+package com.dfl.grevesapp.preferences;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

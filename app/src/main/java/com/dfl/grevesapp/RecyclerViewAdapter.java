@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.dfl.grevesapp.datamodels.Cards.LisbonSubwayViewHolder;
 import com.dfl.grevesapp.datamodels.Cards.StrikerViewHolder;
-import com.dfl.grevesapp.Utils.CompaniesUtils;
+import com.dfl.grevesapp.utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Card;
 import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
 import com.dfl.grevesapp.datamodels.Strike;

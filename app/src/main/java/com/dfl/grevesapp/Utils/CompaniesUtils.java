@@ -1,4 +1,4 @@
-package com.dfl.grevesapp.Utils;
+package com.dfl.grevesapp.utils;
 
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.datamodels.Company;
