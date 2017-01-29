@@ -49,5 +49,5 @@
     <string name="green">Verde</string>
     <string name="red">Vermelha</string>
     <string name="ok">OK</string>
-    <string name="general_status">Resumo geral</string>
+    <string name="delays_and_status">Atrasos e Estados</string>
 </resources>

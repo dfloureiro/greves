@@ -3,10 +3,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_generalStatus"
-            android:icon="@drawable/ic_megaphone"
-            android:title="@string/general_status" />
-        <item
             android:id="@+id/nav_strikes"
             android:icon="@drawable/ic_megaphone"
             android:title="@string/last_strikes" />
@@ -14,6 +10,10 @@
             android:id="@+id/nav_allStrikes"
             android:icon="@drawable/ic_megaphone"
             android:title="@string/history_strikes" />
+        <item
+            android:id="@+id/nav_delaysAndStatus"
+            android:icon="@drawable/ic_megaphone"
+            android:title="@string/delays_and_status" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"

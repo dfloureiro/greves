@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState != null) {
             recyclerViewOption = RecyclerViewOption.valueOf(savedInstanceState.getString(RECYCLERVIEW_OPTION));
         } else {
-            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
+            recyclerViewOption = RecyclerViewOption.CURRENT_STRIKES;
         }
 
         setSupportActionBar(toolbar);
@@ -121,14 +121,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.removeAllViews();
         progressBar.setVisibility(View.VISIBLE);
         switch (recyclerViewOption) {
-            case GENERAL_STATUS:
-                getLisbonSubwayLineStatus();
-                break;
             case CURRENT_STRIKES:
                 getStrikes();
                 break;
             case ALL_STRIKES:
                 getAllStrikes();
+                break;
+            case GENERAL_STATUS:
+                getLisbonSubwayLineStatus();
                 break;
         }
     }
@@ -149,14 +149,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_generalStatus) {
-            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
-            refreshRecycleView();
-        } else if (id == R.id.nav_strikes) {
+        if (id == R.id.nav_strikes) {
             recyclerViewOption = RecyclerViewOption.CURRENT_STRIKES;
             refreshRecycleView();
         } else if (id == R.id.nav_allStrikes) {
             recyclerViewOption = RecyclerViewOption.ALL_STRIKES;
+            refreshRecycleView();
+        } else if (id == R.id.nav_delaysAndStatus) {
+            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
             refreshRecycleView();
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(getBaseContext(), PreferencesActivity.class));
