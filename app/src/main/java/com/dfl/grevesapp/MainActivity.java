@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.dfl.grevesapp.Database.Database;
 import com.dfl.grevesapp.Preferences.PreferencesActivity;
 import com.dfl.grevesapp.Utils.StrikesUtils;
+import com.dfl.grevesapp.datamodels.Card;
 import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.services.UpdateService;
@@ -290,7 +291,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void showStrikes(ArrayList<Strike> strikes) {
         if (strikes != null) {
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(strikes, getBaseContext());
+            ArrayList<Card> cards = new ArrayList<>();
+            for (Strike strike : strikes) {
+                cards.add(new Card(strike, Card.CardType.STRIKE));
+            }
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(cards, getBaseContext());
             recyclerView.setAdapter(adapter);
             hideLoading();
         }
@@ -308,7 +313,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         call.enqueue(new Callback<LisbonSubwayLinesStatus>() {
             @Override
             public void onResponse(Call<LisbonSubwayLinesStatus> call, Response<LisbonSubwayLinesStatus> response) {
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(response.body(), getBaseContext());
+                ArrayList<Card> cards = new ArrayList<>();
+                cards.add(new Card(response.body(), Card.CardType.LISBON_SUBWAY));
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(cards, getBaseContext());
                 recyclerView.setAdapter(adapter);
                 hideLoading();
             }

@@ -1,4 +1,4 @@
-package com.dfl.grevesapp;
+package com.dfl.grevesapp.Cards;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dfl.grevesapp.R;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +19,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-class StrikerViewHolder extends RecyclerView.ViewHolder {
+public class StrikerViewHolder extends RecyclerView.ViewHolder {
     private CardView cardView;
     private TextView companyName;
     private TextView description;
@@ -36,7 +38,7 @@ class StrikerViewHolder extends RecyclerView.ViewHolder {
      *
      * @param itemView view
      */
-    StrikerViewHolder(View itemView) {
+    public StrikerViewHolder(View itemView) {
         super(itemView);
         cardView = (CardView) itemView.findViewById(R.id.cardView);
         companyName = (TextView) itemView.findViewById(R.id.companyName);
