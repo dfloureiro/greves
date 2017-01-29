@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dfl.grevesapp.Cards.LisbonSubwayViewHolder;
-import com.dfl.grevesapp.Cards.StrikerViewHolder;
+import com.dfl.grevesapp.datamodels.Cards.LisbonSubwayViewHolder;
+import com.dfl.grevesapp.datamodels.Cards.StrikerViewHolder;
 import com.dfl.grevesapp.Utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Card;
 import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
