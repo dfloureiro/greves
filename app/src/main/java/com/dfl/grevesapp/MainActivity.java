@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void refreshRecycleView() {
         noStrikesIcon.setVisibility(View.GONE);
         noStrikesText.setVisibility(View.GONE);
-        recyclerView.removeAllViews();
+        recyclerView.removeAllViewsInLayout();
         progressBar.setVisibility(View.VISIBLE);
         switch (recyclerViewOption) {
             case CURRENT_STRIKES:
