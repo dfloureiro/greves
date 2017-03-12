@@ -16,4 +16,7 @@ public class Company extends RealmObject {
     @PrimaryKey
     private int id;
     private String name;
+
+    public Company() {
+    }
 }

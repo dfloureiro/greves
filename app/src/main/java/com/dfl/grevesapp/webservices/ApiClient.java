@@ -21,9 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static final String BASE_URL_HA_GREVE = "http://hagreve.com/api/";
-    private static final String BASE_URL_LISBON_SUBWAY = "http://app.metrolisboa.pt/";
     private static Retrofit retrofitHaGreve = null;
-    private static Retrofit retrofitLisbonSubway = null;
 
     /**
      * get client hagreve.com
@@ -40,23 +38,6 @@ public class ApiClient {
                     .build();
         }
         return retrofitHaGreve;
-    }
-
-    /**
-     * get client metrolisboa.pt
-     *
-     * @param context app context
-     * @return retrofit client
-     */
-    public static Retrofit getClientLisbonSubway(Context context) {
-        if (retrofitLisbonSubway == null) {
-            retrofitLisbonSubway = new Retrofit.Builder()
-                    .baseUrl(BASE_URL_LISBON_SUBWAY)
-                    .client(setupClient(context))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofitLisbonSubway;
     }
 
     /**

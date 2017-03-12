@@ -23,6 +23,6 @@ public class Card {
      * Card type
      */
     public enum CardType {
-        LISBON_SUBWAY, STRIKE
+        STRIKE
     }
 }

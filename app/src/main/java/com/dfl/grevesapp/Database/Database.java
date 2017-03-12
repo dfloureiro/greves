@@ -77,13 +77,6 @@ public class Database {
     }
 
     /**
-     * @return list of current strikes sorted by start_date
-     */
-    public static RealmResults<Strike> getStrikes() {
-        return get().where(Strike.class).equalTo("on_going", true).findAllSorted("start_date", Sort.DESCENDING);
-    }
-
-    /**
      * close database
      */
     public static void close() {

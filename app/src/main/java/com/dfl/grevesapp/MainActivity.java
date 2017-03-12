@@ -1,354 +1,52 @@
 package com.dfl.grevesapp;
 
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.dfl.grevesapp.adapters.PageAdapter;
 import com.dfl.grevesapp.database.Database;
-import com.dfl.grevesapp.preferences.PreferencesActivity;
-import com.dfl.grevesapp.utils.StrikesUtils;
-import com.dfl.grevesapp.datamodels.Card;
-import com.dfl.grevesapp.datamodels.LisbonSubwayLinesStatus;
-import com.dfl.grevesapp.datamodels.Strike;
-import com.dfl.grevesapp.services.UpdateService;
-import com.dfl.grevesapp.webservices.ApiClient;
-import com.dfl.grevesapp.webservices.HaGrevesServices;
-import com.dfl.grevesapp.webservices.MetroLisboaServices;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
-import io.realm.RealmResults;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * Created by Diogo Loureiro on 05/11/2016.
+ * Created by Loureiro on 11/03/2017.
  * <p>
- * main activity of the greves app
+ * Main Activity
  */
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //
-    private String RECYCLERVIEW_OPTION = "RECYCLERVIEW_OPTION";
-
-    //views resources
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private DrawerLayout drawer;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ProgressBar progressBar;
-    private ImageView noStrikesIcon;
-    private TextView noStrikesText;
-
-    //has value of the type of request
-    private RecyclerViewOption recyclerViewOption;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bindViews();
 
-        if (savedInstanceState != null) {
-            recyclerViewOption = RecyclerViewOption.valueOf(savedInstanceState.getString(RECYCLERVIEW_OPTION));
-        } else {
-            recyclerViewOption = RecyclerViewOption.CURRENT_STRIKES;
-        }
+        Database.init(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
-        //navigation view
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        PageAdapter pagerAdapter =
+                new PageAdapter(getFragmentManager(), MainActivity.this);
+        viewPager.setAdapter(pagerAdapter);
 
-        //recycler view
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        //swype layout
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshRecycleView();
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(pagerAdapter.getTabView(i));
             }
-        });
-
-        //first update
-        refreshRecycleView();
-
-        startService(new Intent(this, UpdateService.class));
-    }
-
-    /**
-     * bind all views
-     */
-    private void bindViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        noStrikesIcon = (ImageView) findViewById(R.id.noStrikesIcon);
-        noStrikesText = (TextView) findViewById(R.id.noStrikesText);
-    }
-
-    /**
-     * makes new request based on user preference
-     */
-    private void refreshRecycleView() {
-        noStrikesIcon.setVisibility(View.GONE);
-        noStrikesText.setVisibility(View.GONE);
-        recyclerView.removeAllViewsInLayout();
-        progressBar.setVisibility(View.VISIBLE);
-        switch (recyclerViewOption) {
-            case CURRENT_STRIKES:
-                getStrikes();
-                break;
-            case ALL_STRIKES:
-                getAllStrikes();
-                break;
-            case GENERAL_STATUS:
-                getLisbonSubwayLineStatus();
-                break;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_strikes) {
-            recyclerViewOption = RecyclerViewOption.CURRENT_STRIKES;
-            refreshRecycleView();
-        } else if (id == R.id.nav_allStrikes) {
-            recyclerViewOption = RecyclerViewOption.ALL_STRIKES;
-            refreshRecycleView();
-        } else if (id == R.id.nav_delaysAndStatus) {
-            recyclerViewOption = RecyclerViewOption.GENERAL_STATUS;
-            refreshRecycleView();
-        } else if (id == R.id.nav_settings) {
-            startActivity(new Intent(getBaseContext(), PreferencesActivity.class));
-        } else if (id == R.id.nav_reportStrike) {
-            sendReportStrikeEmail();
-        } else if (id == R.id.nav_share) {
-            shareApp();
-        } else if (id == R.id.nav_sendFeedback) {
-            sendFeedback();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    /**
-     * intent to share the app trough social media
-     */
-    private void shareApp() {
-        // TODO: 06/11/2016 partilhar o link da app
-    }
-
-    /**
-     * intent to send feedback. Redirects do store link
-     */
-    private void sendFeedback() {
-        // TODO: 06/11/2016 redirecionar para o link da loja
-    }
-
-
-    /**
-     * send new email, reporting a new strike
-     */
-    private void sendReportStrikeEmail() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{getResources().getString(R.string.hagreve_email)});
-        i.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.submit_new_strike));
-        try {
-            startActivity(Intent.createChooser(i, getResources().getString(R.string.send_strike_via)));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, R.string.no_email_client_installed, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(RECYCLERVIEW_OPTION, recyclerViewOption.toString());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Database.close();
-    }
-
-    /**
-     * all strikes request. returns all strikes, including the ones that already finished
-     */
-    private void getAllStrikes() { // TODO: 16/01/2017 refactor ws
-        HaGrevesServices apiService = ApiClient.getClientHaGreve(getBaseContext()).create(HaGrevesServices.class);
-        Call<Strike[]> call = apiService.getAllStrikes();
-        call.enqueue(new Callback<Strike[]>() {
-            @Override
-            public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
-                ArrayList<Strike> strikes = new ArrayList<>();
-                Collections.addAll(strikes, response.body());
-                handleOnResponse(strikes);
-            }
-
-            @Override
-            public void onFailure(Call<Strike[]> call, Throwable t) {
-                Database.init(getBaseContext());
-                RealmResults<Strike> strikes = Database.getAllStrikes();
-                if (strikes != null) {
-                    showStrikes(new ArrayList<>(strikes));
-                } else {
-                    showStrikes(null);
-                }
-            }
-        });
-    }
-
-    /**
-     * strikes request. returns strikes, only the ones that are happening or about to
-     */
-    private void getStrikes() { // TODO: 16/01/2017 refactor ws 
-        HaGrevesServices apiService = ApiClient.getClientHaGreve(getBaseContext()).create(HaGrevesServices.class);
-        Call<Strike[]> call = apiService.getStrikes();
-        call.enqueue(new Callback<Strike[]>() {
-            @Override
-            public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
-                ArrayList<Strike> strikes = new ArrayList<>();
-                Collections.addAll(strikes, response.body());
-                for (Strike strike : strikes) {
-                    strike.setOn_going(true);
-                }
-                handleOnResponse(strikes);
-            }
-
-            @Override
-            public void onFailure(Call<Strike[]> call, Throwable t) {
-                Database.init(getBaseContext());
-                RealmResults<Strike> strikes = Database.getStrikes();
-                if (strikes != null) {
-                    showStrikes(new ArrayList<>(strikes));
-                } else {
-                    showStrikes(null);
-                }
-            }
-        });
-    }
-
-    /**
-     * on strikes request success
-     *
-     * @param strikes list of strikes
-     */
-    private void handleOnResponse(ArrayList<Strike> strikes) {
-        StrikesUtils.sortSrikeDate(strikes);
-        Database.init(getBaseContext());
-        Database.addStrikes(strikes);
-        showStrikes(strikes);
-    }
-
-    /**
-     * show strikes in the recycler view
-     *
-     * @param strikes arraylist of strikes
-     */
-    private void showStrikes(ArrayList<Strike> strikes) {
-        if (strikes != null) {
-            ArrayList<Card> cards = new ArrayList<>();
-            for (Strike strike : strikes) {
-                cards.add(new Card(strike, Card.CardType.STRIKE));
-            }
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(cards, getBaseContext());
-            recyclerView.setAdapter(adapter);
-            hideLoading();
-        }
-        if (strikes == null || strikes.isEmpty()) {
-            showNoStrikesScreen();
-        }
-    }
-
-    /**
-     * lisbon subway lines status
-     */
-    private void getLisbonSubwayLineStatus() { // TODO: 16/01/2017 refactor ws
-        MetroLisboaServices apiService = ApiClient.getClientLisbonSubway(getBaseContext()).create(MetroLisboaServices.class);
-        Call<LisbonSubwayLinesStatus> call = apiService.getLineStatus();
-        call.enqueue(new Callback<LisbonSubwayLinesStatus>() {
-            @Override
-            public void onResponse(Call<LisbonSubwayLinesStatus> call, Response<LisbonSubwayLinesStatus> response) {
-                ArrayList<Card> cards = new ArrayList<>();
-                cards.add(new Card(response.body(), Card.CardType.LISBON_SUBWAY));
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(cards, getBaseContext());
-                recyclerView.setAdapter(adapter);
-                hideLoading();
-            }
-
-            @Override
-            public void onFailure(Call<LisbonSubwayLinesStatus> call, Throwable t) {
-                // TODO: 28/01/2017 no net!
-                hideLoading();
-            }
-        });
-    }
-
-    /**
-     * hide loading elements
-     */
-    private void hideLoading() {
-        mSwipeRefreshLayout.setRefreshing(false);
-        progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    /**
-     * shows the views when no strikes are available to be shown
-     */
-    private void showNoStrikesScreen() {
-        noStrikesIcon.setVisibility(View.VISIBLE);
-        noStrikesText.setVisibility(View.VISIBLE);
-    }
-
-
-    /**
-     * possible recyclerview options
-     */
-    private enum RecyclerViewOption {
-        GENERAL_STATUS, CURRENT_STRIKES, ALL_STRIKES
     }
 }

@@ -15,10 +15,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 
+import com.dfl.grevesapp.MainActivity;
 import com.dfl.grevesapp.database.Database;
 import com.dfl.grevesapp.preferences.PreferencesManager;
 import com.dfl.grevesapp.utils.CompaniesUtils;
-import com.dfl.grevesapp.MainActivity;
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.webservices.ApiClient;
@@ -137,16 +137,12 @@ public class UpdateService extends Service implements Callback<Strike[]> {
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         final NotificationManager managerNotification = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         managerNotification.notify(strike.getId(), notification);
-        //ManagerPreferences.setLastUpdates(numberUpdates);
     }
 
     @Override
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
         ArrayList<Strike> strikes = new ArrayList<>();
         Collections.addAll(strikes, response.body());
-        for (Strike strike : strikes) {
-            strike.setOn_going(true);
-        }
         Database.init(getBaseContext());
         Database.addStrikes(strikes);
         if (PreferencesManager.getAllowNotifications(this)) {

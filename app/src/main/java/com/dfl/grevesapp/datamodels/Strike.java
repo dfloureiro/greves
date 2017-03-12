@@ -22,6 +22,8 @@ public class Strike extends RealmObject {
     private Company company;
     private String description;
     private String end_date;
-    private boolean on_going;
-    //private Submitter submitter;
+    private Submitter submitter;
+
+    public Strike() {
+    }
 }
