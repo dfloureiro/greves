@@ -63,7 +63,9 @@ public class HistoryStrikesTabFragment extends BaseStrikesTabFragment {
             @Override
             public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
                 ArrayList<Strike> strikes = new ArrayList<>();
-                Collections.addAll(strikes, response.body());
+                if (response.body() != null) {
+                    Collections.addAll(strikes, response.body());
+                }
                 handleOnResponse(StrikesUtils.getOnlyOldStrikes(strikes));
             }
 
