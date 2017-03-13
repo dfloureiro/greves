@@ -20,12 +20,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="" />
         </activity>
 
-        <service android:name=".services.UpdateService">
-        </service>
+        <service android:name=".services.UpdateService" />
 
-        <receiver android:name=".receivers.UpdateBroadcastReceiver" >
+        <receiver android:name=".receivers.UpdateBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -34,7 +36,6 @@
         <activity
             android:name=".preferences.PreferencesActivity"
             android:label="@string/title_preferences_activity"
-            tools:ignore="InnerclassSeparator">
-        </activity>
+            tools:ignore="InnerclassSeparator" />
     </application>
 </manifest>

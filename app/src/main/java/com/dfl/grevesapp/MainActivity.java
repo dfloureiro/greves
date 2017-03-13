@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.dfl.grevesapp.adapters.PageAdapter;
 import com.dfl.grevesapp.database.Database;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Loureiro on 11/03/2017.
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Fabric.with(this, new Crashlytics());
 
         Database.init(this);
 
