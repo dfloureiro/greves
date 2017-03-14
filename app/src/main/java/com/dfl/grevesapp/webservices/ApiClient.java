@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -55,6 +56,8 @@ public class ApiClient {
         return new OkHttpClient.Builder()
                 .cache(cache)
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
 
