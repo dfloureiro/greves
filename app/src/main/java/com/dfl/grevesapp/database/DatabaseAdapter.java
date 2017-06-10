@@ -197,7 +197,7 @@ public class DatabaseAdapter {
         values.put(DatabaseHelper.COMPANY_NAME, company.getName());
         databaseHelper.getWritableDatabase().beginTransaction();
         databaseHelper.getWritableDatabase().update(DatabaseHelper.COMPANY_TABLE_NAME, values,
-                DatabaseHelper.STRIKE_ID + "=" + company.getId(), null);
+                DatabaseHelper.COMPANY_ID + "=" + company.getId(), null);
         databaseHelper.getWritableDatabase().setTransactionSuccessful();
         databaseHelper.getWritableDatabase().endTransaction();
     }
