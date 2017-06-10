@@ -40,11 +40,16 @@ public class DatabaseAdapter {
 
     /**
      * insert/update list of strikes to database
+     * <p>
+     * also inserts company in case it's not yet inserted
      *
      * @param strikes list of strikes
      */
     public void addStrikes(ArrayList<Strike> strikes) {
         for (Strike strike : strikes) {
+            if (!isCompanyAlreadyInserted(strike.getCompany().getId())) {
+                insertCompany(strike.getCompany());
+            }
             if (!isStrikeAlreadyInserted(strike.getId())) {
                 insertStrike(strike);
             } else {
@@ -216,7 +221,8 @@ public class DatabaseAdapter {
                         + " ORDER BY " + DatabaseHelper.COMPANY_NAME + " ASC", null);
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                Company company = new Company(cursor.getInt(0), cursor.getString(0));
+                Company company = new Company(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COMPANY_ID)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
                 companies.add(company);
                 cursor.moveToNext();
             }
@@ -235,7 +241,8 @@ public class DatabaseAdapter {
         Cursor cursor = databaseHelper.getReadableDatabase().query(DatabaseHelper.COMPANY_TABLE_NAME,
                 allColumnsCompany, DatabaseHelper.COMPANY_ID + " = " + companyID, null, null, null, null);
         cursor.moveToFirst();
-        Company company = new Company(cursor.getInt(0), cursor.getString(0));
+        Company company = new Company(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COMPANY_ID)),
+                cursor.getString(cursor.getColumnIndex(DatabaseHelper.COMPANY_NAME)));
         cursor.close();
         return company;
     }
