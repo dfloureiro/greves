@@ -57,7 +57,7 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     public View getTabView(int position) {
         @SuppressLint("InflateParams") View tab = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
-        TextView tv = (TextView) tab.findViewById(R.id.custom_text);
+        TextView tv = tab.findViewById(R.id.custom_text);
         tv.setText(tabTitles[position]);
         return tab;
     }

@@ -50,7 +50,7 @@ public class CurrentStrikesTabFragment extends BaseStrikesTabFragment {
         });
 
         if (rootView != null) {
-            fab = (FloatingActionButton) rootView.findViewById(R.id.main_fab);
+            fab = rootView.findViewById(R.id.main_fab);
             fab.setVisibility(View.VISIBLE);
             getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

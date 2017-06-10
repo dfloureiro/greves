@@ -40,17 +40,17 @@ public class StrikerViewHolder extends RecyclerView.ViewHolder {
      */
     public StrikerViewHolder(View itemView) {
         super(itemView);
-        cardView = (CardView) itemView.findViewById(R.id.cardView);
-        companyName = (TextView) itemView.findViewById(R.id.companyName);
-        description = (TextView) itemView.findViewById(R.id.description);
-        imageView = (ImageView) itemView.findViewById(R.id.cardImage);
-        endDate = (TextView) itemView.findViewById(R.id.endDate);
-        weekday = (TextView) itemView.findViewById(R.id.weekday);
-        day = (TextView) itemView.findViewById(R.id.day);
-        month = (TextView) itemView.findViewById(R.id.month);
-        year = (TextView) itemView.findViewById(R.id.year);
-        source = (Button) itemView.findViewById(R.id.source);
-        cancelled = (Button) itemView.findViewById(R.id.canceled);
-        share = (ImageView) itemView.findViewById(R.id.share);
+        cardView = itemView.findViewById(R.id.cardView);
+        companyName = itemView.findViewById(R.id.companyName);
+        description = itemView.findViewById(R.id.description);
+        imageView = itemView.findViewById(R.id.cardImage);
+        endDate = itemView.findViewById(R.id.endDate);
+        weekday = itemView.findViewById(R.id.weekday);
+        day = itemView.findViewById(R.id.day);
+        month = itemView.findViewById(R.id.month);
+        year = itemView.findViewById(R.id.year);
+        source = itemView.findViewById(R.id.source);
+        cancelled = itemView.findViewById(R.id.canceled);
+        share = itemView.findViewById(R.id.share);
     }
 }

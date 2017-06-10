@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,7 +53,7 @@ public class BaseStrikesTabFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(llm);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
         return rootView;
     }
 
@@ -62,11 +61,11 @@ public class BaseStrikesTabFragment extends Fragment {
      * @param rootView root view to find all other views
      */
     protected void bindViews(View rootView) {
-        noStrikesIcon = (ImageView) rootView.findViewById(R.id.noStrikesIcon);
-        noStrikesText = (TextView) rootView.findViewById(R.id.noStrikesText);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        noStrikesIcon = rootView.findViewById(R.id.noStrikesIcon);
+        noStrikesText = rootView.findViewById(R.id.noStrikesText);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        progressBar = rootView.findViewById(R.id.progressBar);
+        recyclerView = rootView.findViewById(R.id.rv);
     }
 
     @Override
