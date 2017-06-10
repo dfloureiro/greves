@@ -1,7 +1,6 @@
 package com.dfl.grevesapp.datamodels;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,11 +11,8 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class Company extends RealmObject {
-    @PrimaryKey
+@AllArgsConstructor
+public class Company {
     private int id;
     private String name;
-
-    public Company() {
-    }
 }

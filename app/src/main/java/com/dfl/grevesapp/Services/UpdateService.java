@@ -16,7 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 
 import com.dfl.grevesapp.MainActivity;
-import com.dfl.grevesapp.database.Database;
+import com.dfl.grevesapp.database.DatabaseAdapter;
 import com.dfl.grevesapp.preferences.PreferencesManager;
 import com.dfl.grevesapp.utils.CompaniesUtils;
 import com.dfl.grevesapp.R;
@@ -143,8 +143,7 @@ public class UpdateService extends Service implements Callback<Strike[]> {
     public void onResponse(Call<Strike[]> call, Response<Strike[]> response) {
         ArrayList<Strike> strikes = new ArrayList<>();
         Collections.addAll(strikes, response.body());
-        Database.init(getBaseContext());
-        Database.addStrikes(strikes);
+        new DatabaseAdapter(this).addStrikes(strikes);
         if (PreferencesManager.getAllowNotifications(this)) {
             for (Strike strike : strikes) {
                 if (checkPreference(strike.getCompany().getName())) {
@@ -152,7 +151,6 @@ public class UpdateService extends Service implements Callback<Strike[]> {
                 }
             }
         }
-        Database.close();
         stopSelf(startId);
     }
 

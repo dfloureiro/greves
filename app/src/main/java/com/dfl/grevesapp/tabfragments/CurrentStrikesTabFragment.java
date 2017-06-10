@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dfl.grevesapp.R;
-import com.dfl.grevesapp.database.Database;
+import com.dfl.grevesapp.database.DatabaseAdapter;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.utils.StrikesUtils;
 import com.dfl.grevesapp.webservices.ApiClient;
@@ -19,7 +19,6 @@ import com.dfl.grevesapp.webservices.HaGrevesServices;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,7 +96,7 @@ public class CurrentStrikesTabFragment extends BaseStrikesTabFragment {
 
             @Override
             public void onFailure(Call<Strike[]> call, Throwable t) {
-                RealmResults<Strike> strikes = Database.getAllStrikes();
+                ArrayList<Strike> strikes = new DatabaseAdapter(getActivityContext()).getStrikes();
                 if (strikes != null) {
                     showStrikes(StrikesUtils.getOnlyCurrentStrikes(new ArrayList<>(strikes)));
                 } else {

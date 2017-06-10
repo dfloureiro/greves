@@ -9,8 +9,8 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import com.dfl.grevesapp.database.Database;
 import com.dfl.grevesapp.R;
+import com.dfl.grevesapp.database.DatabaseAdapter;
 import com.dfl.grevesapp.utils.CompaniesUtils;
 import com.dfl.grevesapp.datamodels.Company;
 import com.dfl.grevesapp.services.UpdateService;
@@ -20,7 +20,6 @@ import com.dfl.grevesapp.webservices.HaGrevesServices;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +76,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Database.close();
     }
 
 
@@ -95,8 +93,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
                 Collections.addAll(companies, response.body());
                 CompaniesUtils.sortCompanies(companies);
 
-                Database.init(context);
-                Database.addCompanies(companies);
+                new DatabaseAdapter(getActivity()).addCompanies(companies);
                 for (Company company : companies) {
                     addCheckboxes(company, companiesCategory, context);
                 }
@@ -104,8 +101,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
 
             @Override
             public void onFailure(Call<Company[]> call, Throwable t) {
-                Database.init(context);
-                RealmResults<Company> companies = Database.getCompanies();
+                ArrayList<Company> companies = new DatabaseAdapter(getActivity()).getCompanies();
                 for (Company company : companies) {
                     addCheckboxes(company, companiesCategory, context);
                 }

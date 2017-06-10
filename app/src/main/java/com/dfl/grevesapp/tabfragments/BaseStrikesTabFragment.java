@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.dfl.grevesapp.R;
 import com.dfl.grevesapp.adapters.RecyclerViewAdapter;
-import com.dfl.grevesapp.database.Database;
+import com.dfl.grevesapp.database.DatabaseAdapter;
 import com.dfl.grevesapp.datamodels.Card;
 import com.dfl.grevesapp.datamodels.Strike;
 import com.dfl.grevesapp.utils.StrikesUtils;
@@ -81,7 +81,7 @@ public class BaseStrikesTabFragment extends Fragment {
      */
     protected void handleOnResponse(ArrayList<Strike> strikes) {
         StrikesUtils.sortSrikesByDate(strikes);
-        Database.addStrikes(strikes);
+        new DatabaseAdapter(activityContext).addStrikes(strikes);
         showStrikes(strikes);
     }
 

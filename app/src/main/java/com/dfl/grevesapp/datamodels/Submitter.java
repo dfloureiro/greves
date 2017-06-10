@@ -1,6 +1,6 @@
 package com.dfl.grevesapp.datamodels;
 
-import io.realm.RealmObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,12 +9,10 @@ import lombok.EqualsAndHashCode;
  * <p>
  * class submiter
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode()
 @Data
-public class Submitter extends RealmObject {
+@AllArgsConstructor
+public class Submitter {
     private String first_name;
     private String last_name;
-
-    public Submitter() {
-    }
 }
