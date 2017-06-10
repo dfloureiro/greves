@@ -39,13 +39,17 @@ public class DatabaseAdapter {
     }
 
     /**
-     * insert list of strikes to database
+     * insert/update list of strikes to database
      *
      * @param strikes list of strikes
      */
     public void addStrikes(ArrayList<Strike> strikes) {
         for (Strike strike : strikes) {
-            addStrike(strike);
+            if (!isStrikeAlreadyInserted(strike.getId())) {
+                insertStrike(strike);
+            } else {
+                updateStrike(strike);
+            }
         }
     }
 
@@ -54,24 +58,46 @@ public class DatabaseAdapter {
      *
      * @param strike strike to insert
      */
-    private void addStrike(Strike strike) {
-        if (!isStrikeAlreadyInserted(strike.getId())) {
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.STRIKE_ID, strike.getId());
-            values.put(DatabaseHelper.STRIKE_START_DATE, strike.getStart_date());
-            values.put(DatabaseHelper.STRIKE_END_DATE, strike.getEnd_date());
-            values.put(DatabaseHelper.STRIKE_CANCELED, strike.isCanceled());
-            values.put(DatabaseHelper.STRIKE_ALL_DAY, strike.isAll_day());
-            values.put(DatabaseHelper.STRIKE_SOURCE_LINK, strike.getSource_link());
-            values.put(DatabaseHelper.COMPANY_ID, strike.getCompany().getId());
-            values.put(DatabaseHelper.STRIKE_DESCRIPTION, strike.getDescription());
-            values.put(DatabaseHelper.STRIKE_SUBMITTER_FIRST_NAME, strike.getSubmitter().getFirst_name());
-            values.put(DatabaseHelper.STRIKE_SUBMITTER_LAST_NAME, strike.getSubmitter().getLast_name());
-            databaseHelper.getWritableDatabase().beginTransaction();
-            databaseHelper.getWritableDatabase().insert(DatabaseHelper.STRIKE_TABLE_NAME, null, values);
-            databaseHelper.getWritableDatabase().setTransactionSuccessful();
-            databaseHelper.getWritableDatabase().endTransaction();
-        }
+    private void insertStrike(Strike strike) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.STRIKE_ID, strike.getId());
+        values.put(DatabaseHelper.STRIKE_START_DATE, strike.getStart_date());
+        values.put(DatabaseHelper.STRIKE_END_DATE, strike.getEnd_date());
+        values.put(DatabaseHelper.STRIKE_CANCELED, strike.isCanceled());
+        values.put(DatabaseHelper.STRIKE_ALL_DAY, strike.isAll_day());
+        values.put(DatabaseHelper.STRIKE_SOURCE_LINK, strike.getSource_link());
+        values.put(DatabaseHelper.COMPANY_ID, strike.getCompany().getId());
+        values.put(DatabaseHelper.STRIKE_DESCRIPTION, strike.getDescription());
+        values.put(DatabaseHelper.STRIKE_SUBMITTER_FIRST_NAME, strike.getSubmitter().getFirst_name());
+        values.put(DatabaseHelper.STRIKE_SUBMITTER_LAST_NAME, strike.getSubmitter().getLast_name());
+        databaseHelper.getWritableDatabase().beginTransaction();
+        databaseHelper.getWritableDatabase().insert(DatabaseHelper.STRIKE_TABLE_NAME, null, values);
+        databaseHelper.getWritableDatabase().setTransactionSuccessful();
+        databaseHelper.getWritableDatabase().endTransaction();
+    }
+
+    /**
+     * update strike to database
+     *
+     * @param strike strike to update
+     */
+    private void updateStrike(Strike strike) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.STRIKE_ID, strike.getId());
+        values.put(DatabaseHelper.STRIKE_START_DATE, strike.getStart_date());
+        values.put(DatabaseHelper.STRIKE_END_DATE, strike.getEnd_date());
+        values.put(DatabaseHelper.STRIKE_CANCELED, strike.isCanceled());
+        values.put(DatabaseHelper.STRIKE_ALL_DAY, strike.isAll_day());
+        values.put(DatabaseHelper.STRIKE_SOURCE_LINK, strike.getSource_link());
+        values.put(DatabaseHelper.COMPANY_ID, strike.getCompany().getId());
+        values.put(DatabaseHelper.STRIKE_DESCRIPTION, strike.getDescription());
+        values.put(DatabaseHelper.STRIKE_SUBMITTER_FIRST_NAME, strike.getSubmitter().getFirst_name());
+        values.put(DatabaseHelper.STRIKE_SUBMITTER_LAST_NAME, strike.getSubmitter().getLast_name());
+        databaseHelper.getWritableDatabase().beginTransaction();
+        databaseHelper.getWritableDatabase().update(DatabaseHelper.STRIKE_TABLE_NAME, values,
+                DatabaseHelper.STRIKE_ID + "=" + strike.getId(), null);
+        databaseHelper.getWritableDatabase().setTransactionSuccessful();
+        databaseHelper.getWritableDatabase().endTransaction();
     }
 
     /**
@@ -130,24 +156,18 @@ public class DatabaseAdapter {
         return isInserted;
     }
 
-    /*public Strike getStrike(int strikeID) {
-        Cursor cursor = getDatabaseHelper().getReadableDatabase().query(DatabaseHelper.COMPANY_TABLE_NAME,
-                allColumnsStrike, DatabaseHelper.COMPANY_ID + " = " + strikeID, null, null, null, null);
-        cursor.moveToFirst();
-        Strike strike = new Strike(cursor.getInt(0), cursor.getString(0));
-        cursor.close();
-        return strike;
-    }*/
-
-
     /**
-     * insert list of companies to database
+     * insert/update list of companies to database
      *
      * @param companies list of companies
      */
     public void addCompanies(ArrayList<Company> companies) {
         for (Company company : companies) {
-            addCompany(company);
+            if (!isCompanyAlreadyInserted(company.getId())) {
+                insertCompany(company);
+            } else {
+                updateCompany(company);
+            }
         }
     }
 
@@ -156,18 +176,31 @@ public class DatabaseAdapter {
      *
      * @param company company
      */
-    private void addCompany(Company company) {
-        if (!isCompanyAlreadyInserted(company.getId())) {
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.COMPANY_ID, company.getId());
-            values.put(DatabaseHelper.COMPANY_NAME, company.getName());
-            databaseHelper.getWritableDatabase().beginTransaction();
-            databaseHelper.getWritableDatabase().insert(DatabaseHelper.COMPANY_TABLE_NAME, null, values);
-            databaseHelper.getWritableDatabase().setTransactionSuccessful();
-            databaseHelper.getWritableDatabase().endTransaction();
-        }
+    private void insertCompany(Company company) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COMPANY_ID, company.getId());
+        values.put(DatabaseHelper.COMPANY_NAME, company.getName());
+        databaseHelper.getWritableDatabase().beginTransaction();
+        databaseHelper.getWritableDatabase().insert(DatabaseHelper.COMPANY_TABLE_NAME, null, values);
+        databaseHelper.getWritableDatabase().setTransactionSuccessful();
+        databaseHelper.getWritableDatabase().endTransaction();
     }
 
+    /**
+     * update company into the database
+     *
+     * @param company company
+     */
+    private void updateCompany(Company company) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COMPANY_ID, company.getId());
+        values.put(DatabaseHelper.COMPANY_NAME, company.getName());
+        databaseHelper.getWritableDatabase().beginTransaction();
+        databaseHelper.getWritableDatabase().update(DatabaseHelper.COMPANY_TABLE_NAME, values,
+                DatabaseHelper.STRIKE_ID + "=" + company.getId(), null);
+        databaseHelper.getWritableDatabase().setTransactionSuccessful();
+        databaseHelper.getWritableDatabase().endTransaction();
+    }
 
     /**
      * get list of companies from the database
