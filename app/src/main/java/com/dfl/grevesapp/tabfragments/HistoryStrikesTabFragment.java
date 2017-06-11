@@ -42,7 +42,6 @@ public class HistoryStrikesTabFragment extends BaseStrikesTabFragment {
                 getAllStrikes();
             }
         });
-        getAllStrikes();
         return rootView;
     }
 

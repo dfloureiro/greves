@@ -45,17 +45,21 @@ public class DatabaseAdapter {
      *
      * @param strikes list of strikes
      */
-    public void addStrikes(ArrayList<Strike> strikes) {
-        for (Strike strike : strikes) {
-            if (!isCompanyAlreadyInserted(strike.getCompany().getId())) {
-                insertCompany(strike.getCompany());
+    public void addStrikes(final ArrayList<Strike> strikes) {
+        new Thread(new Runnable() {
+            public void run() {
+                for (Strike strike : strikes) {
+                    if (!isCompanyAlreadyInserted(strike.getCompany().getId())) {
+                        insertCompany(strike.getCompany());
+                    }
+                    if (!isStrikeAlreadyInserted(strike.getId())) {
+                        insertStrike(strike);
+                    } else {
+                        updateStrike(strike);
+                    }
+                }
             }
-            if (!isStrikeAlreadyInserted(strike.getId())) {
-                insertStrike(strike);
-            } else {
-                updateStrike(strike);
-            }
-        }
+        }).start();
     }
 
     /**
@@ -166,14 +170,18 @@ public class DatabaseAdapter {
      *
      * @param companies list of companies
      */
-    public void addCompanies(ArrayList<Company> companies) {
-        for (Company company : companies) {
-            if (!isCompanyAlreadyInserted(company.getId())) {
-                insertCompany(company);
-            } else {
-                updateCompany(company);
+    public void addCompanies(final ArrayList<Company> companies) {
+        new Thread(new Runnable() {
+            public void run() {
+                for (Company company : companies) {
+                    if (!isCompanyAlreadyInserted(company.getId())) {
+                        insertCompany(company);
+                    } else {
+                        updateCompany(company);
+                    }
+                }
             }
-        }
+        }).start();
     }
 
     /**
