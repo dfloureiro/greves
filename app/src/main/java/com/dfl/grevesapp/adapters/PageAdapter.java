@@ -22,12 +22,15 @@ import com.dfl.grevesapp.tabfragments.HistoryStrikesTabFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
 
-    private String tabTitles[] = new String[]{"Últimas", "Histórico", "Definições"};
+    private String tabTitles[];
     private Context context;
 
     public PageAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+        tabTitles = new String[]{context.getString(R.string.tab_latest),
+                context.getString(R.string.tab_history),
+                context.getString(R.string.tab_settings)};
     }
 
     @Override

@@ -1,0 +1,43 @@
+<resources>
+
+    <string name="tab_latest">Últimas</string>
+    <string name="tab_history">Histórico</string>
+    <string name="tab_settings">Definições</string>
+
+    <string name="action_settings">Definições</string>
+    <string name="send_strike_via">Enviar nova greve através de…</string>
+    <string name="no_email_client_installed">Não tem um cliente de email instalado.</string>
+    <string name="submit_new_strike">Submeter nova greve</string>
+    <string name="share_via">Partilhar via</string>
+    <string name="ends_at">"Acaba a "</string>
+    <string name="no_strikes_message">Não há greves, tenha um bom dia!</string>
+
+    <string name="company">Empresa</string>
+    <string name="end_of_day">Final do dia</string>
+    <string name="description">descrição</string>
+    <string name="weekday">dia-semana</string>
+    <string name="day">dia</string>
+    <string name="month">mês</string>
+    <string name="year">ano</string>
+    <string name="see_source">Ver Fonte</string>
+    <string name="cancelled">Desconvocada</string>
+
+    <string name="last_strikes">Últimas greves</string>
+    <string name="history_strikes">Histórico de greves</string>
+    <string name="share">Partilhar</string>
+    <string name="share_app">Partilhar aplicação</string>
+    <string name="send_feedback">Enviar opinião</string>
+    <string name="about">Acerca de</string>
+    <string name="title_preferences_activity">Definições</string>
+    <string name="allow_notifications">Permitir notificações</string>
+    <string name="allow_notifications_summary">Receba notificações sobre novas greves</string>
+    <string name="notifications">Notificações</string>
+    <string name="companies">Empresas</string>
+    <string name="service_name">Últimas Greves</string>
+    <string name="companies_summary">Receber notificações das seguintes empresas</string>
+    <string name="error_loading_companies">Erro a carregar as empresas</string>
+    <string name="interval_notifications_summary">Intervalo entre atualizações sobre novas greves</string>
+    <string name="interval_notifications_title">Intervalo entre atualizações</string>
+    <string name="strike_notification_text">" marcou nova greve!"</string>
+    <string name="strike_notification_title">Nova Greve!</string>
+</resources>

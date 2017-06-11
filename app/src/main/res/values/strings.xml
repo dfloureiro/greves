@@ -1,45 +1,44 @@
 <resources>
-    <string name="app_name">Greves</string>
+    <string name="app_name" translatable="false">Greves</string>
+    <string name="hagreve_email" translatable="false">submeter@hagreve.com</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Definições</string>
+    <string name="tab_latest">Latest</string>
+    <string name="tab_history">History</string>
+    <string name="tab_settings">Settings</string>
 
-    <string name="hagreve_email">submeter@hagreve.com</string>
+    <string name="send_strike_via">Send new strike via…</string>
+    <string name="no_email_client_installed">You don\'t have an email client installed.</string>
+    <string name="submit_new_strike">Submit new strike</string>
+    <string name="share_via">Share via</string>
+    <string name="ends_at">"Ends at "</string>
+    <string name="no_strikes_message">No strikes, have a good day!</string>
 
-    <string name="send_strike_via">Enviar nova greve através de…</string>
-    <string name="no_email_client_installed">Não tem um cliente de email instalado.</string>
-    <string name="submit_new_strike">Submeter nova greve</string>
-    <string name="share_via">Partilhar via</string>
-    <string name="ends_at">"Acaba a "</string>
-    <string name="no_strikes_message">Não há greves, tenha um bom dia!</string>
+    <string name="company">Company</string>
+    <string name="end_of_day">End of day</string>
+    <string name="description">description</string>
+    <string name="weekday">weekday</string>
+    <string name="day">day</string>
+    <string name="month">month</string>
+    <string name="year">year</string>
+    <string name="see_source">See source</string>
+    <string name="cancelled">Cancelled</string>
 
-    <string name="company">Empresa</string>
-    <string name="end_of_day">Final do dia</string>
-    <string name="description">descrição</string>
-    <string name="weekday">dia-semana</string>
-    <string name="day">dia</string>
-    <string name="month">mês</string>
-    <string name="year">ano</string>
-    <string name="see_source">Ver Fonte</string>
-    <string name="cancelled">Desconvocada</string>
-
-    <string name="last_strikes">Últimas greves</string>
-    <string name="history_strikes">Histórico de greves</string>
-    <string name="share">Partilhar</string>
-    <string name="share_app">Partilhar aplicação</string>
-    <string name="send_feedback">Enviar opinião</string>
-    <string name="about">Acerca de</string>
-    <string name="title_preferences_activity">Definições</string>
-    <string name="allow_notifications">Permitir notificações</string>
-    <string name="allow_notifications_summary">Receba notificações sobre novas greves</string>
-    <string name="notifications">Notificações</string>
-    <string name="companies">Empresas</string>
-    <string name="service_name">Últimas Greves</string>
-    <string name="companies_summary">Receber notificações das seguintes empresas</string>
-    <string name="error_loading_companies">Erro a carregar as empresas</string>
-    <string name="interval_notifications_summary">Intervalo entre atualizações sobre novas greves</string>
-    <string name="interval_notifications_title">Intervalo entre atualizações</string>
-    <string name="strike_notification_text">" marcou nova greve!"</string>
-    <string name="strike_notification_title">Nova Greve!</string>
+    <string name="last_strikes">Latest strikes</string>
+    <string name="history_strikes">Strike history</string>
+    <string name="share">Share</string>
+    <string name="share_app">Share app</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="about">About</string>
+    <string name="title_preferences_activity">Settings</string>
+    <string name="allow_notifications">Allow notifications</string>
+    <string name="allow_notifications_summary">Receive notifications of new strikes</string>
+    <string name="notifications">Notifications</string>
+    <string name="companies">Companies</string>
+    <string name="service_name">Latest strikes</string>
+    <string name="companies_summary">Receive notifications from the following companies</string>
+    <string name="error_loading_companies">Error loading companies</string>
+    <string name="interval_notifications_summary">Interval between updates on new strikes</string>
+    <string name="interval_notifications_title">Interval between updates</string>
+    <string name="strike_notification_text">" scheduled a new strike!"</string>
+    <string name="strike_notification_title">New strike!</string>
 </resources>
